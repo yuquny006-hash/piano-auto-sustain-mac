@@ -1,0 +1,63 @@
+<!--
+=============================================================================
+ Steinberg Module Architecture SDK
+ Version 1.0    Date : 01/2004
+
+ Project      : MIDI Echo Sample
+ Filename     : midiecho.xml
+ Created by   : Matthias Juwan
+ Description  : Editor XML Code
+
+=============================================================================
+ LICENSE
+ © 2004, Steinberg Media Technologies, All Rights Reserved
+=============================================================================
+ Redistribution and use in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
+
+   * Redistributions of source code must retain the above copyright notice,
+     this list of conditions and the following disclaimer.
+   * Redistributions in binary form must reproduce the above copyright notice,
+     this list of conditions and the following disclaimer in the documentation
+     and/or other materials provided with the distribution.
+   * Neither the name of the Steinberg Media Technologies nor the names of its
+     contributors may be used to endorse or promote products derived from this
+     software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A  PARTICULAR PURPOSE ARE DISCLAIMED.
+ IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE  OF THIS SOFTWARE, EVEN IF ADVISED
+ OF THE POSSIBILITY OF SUCH DAMAGE.
+=============================================================================
+-->
+
+<skin>
+	<!--
+		Windows: Resources must be included as RC_DATA (not BITMAP!),
+		the 'path' attribute is an integer resource identifier.
+	-->
+	<resources>
+		<bitmap name="bmEchoBackground" path="1001"/>
+	</resources>
+
+	<template name="editor" background="bmEchoBackground">
+		<valuebox name="quantize" 		tip="Echo Quantize" 	size="88,70,60,18"		style="led|horiz-valuebar"/>
+		<valuebox name="length"			tip="Length" 			size="88,31, 60,18"		style="led|horiz-valuebar"/>
+		<valuebox name="repeatRate"		tip="Repeat Rate"		size="18,70, 60,18"		style="led|horiz-valuebar|no-updown"/>
+		<valuebox name="echo" 			tip="Quantize"			size="18,31,60,18"		style="led|horiz-valuebar"/>
+
+		<valuebox name="echoDecay" 		tip="Echo Decay"		size="177,70, 60,18"	style="led|horiz-valuebar|no-updown"/>
+		<valuebox name="lengthDecay" 	tip="Length Decay"		size="247,70, 60,18"	style="led|horiz-valuebar|no-updown"/>
+		<valuebox name="velocityDecay" 	tip="Velocity Decay"	size="177,31,60,18"		style="led|horiz-valuebar|no-updown"/>
+		<valuebox name="pitchDecay" 	tip="Pitch Decay"		size="247,31,60,18"		style="led|horiz-valuebar|no-updown"/>
+		
+		<!-- the preset view is created by the host application: -->
+		<view name="host.PresetViewHorizontalSmallNewer" data="Preset" size="166,124,140,20"/>
+	</template>
+</skin>

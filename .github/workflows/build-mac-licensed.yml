@@ -1,0 +1,42 @@
+name: Build Mac Licensed (Universal)
+run-name: Piano Auto Sustain 1.0 macOS Universal Licensed build
+# 用途：在 GitHub 托管的 macOS  runner 上自动编译带授权的 Universal 插件（VST3+AU），
+#       并打包成 Licensed-CANDIDATE.zip 作为构件(artifact)供下载。
+# 触发：手动（Actions 页面点 Run workflow）。如需推分支自动构建，取消下面 push 段注释。
+# 安全：构建只需仓库内的公钥 mac-public-key.txt，不需要任何 Secret；私钥绝不进仓库。
+on:
+  workflow_dispatch:
+  # push:
+  #   branches: [main]
+permissions:
+  contents: read
+jobs:
+  build-mac:
+    runs-on: macos-14
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Verify public key present
+        run: |
+          test -f mac-public-key.txt || { echo "缺少 mac-public-key.txt（公钥未提交）"; exit 1; }
+          echo "嵌入公钥: $(cat mac-public-key.txt)"
+      - name: Build licensed Universal plugin (VST3 + AU) and package
+        run: bash scripts/build-mac-licensed.sh
+      - name: Locate artifact
+        id: locate
+        run: |
+          ZIP=$(ls mac-build-*/output/*.zip | head -n1)
+          SHA=$(ls mac-build-*/output/*.zip.sha256 | head -n1)
+          echo "zip=$ZIP" >> "$GITHUB_OUTPUT"
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "候选包: $ZIP"
+      - name: Upload candidate ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: Piano-Auto-Sustain-1.0-macOS-Universal-Licensed-CANDIDATE
+          path: |
+            ${{ steps.locate.outputs.zip }}
+            ${{ steps.locate.outputs.sha }}
+          if-no-files-found: error
+          retention-days: 30

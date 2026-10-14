@@ -1,0 +1,308 @@
+<html>
+
+<head>
+	<title>SDK C++ Classes</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="sdkdoc.css">
+</head>
+
+<body>
+<div>
+
+<table border=0 width=600>
+<tr>
+	<td>
+		<h1>Common SDK Classes</h1>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="CPluginFactory">
+		<h3>CPluginFactory</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="funknown.html">FUnknown</a> &lt;- <a href="pluginbase.html#IPluginFactory">IPluginFactory</a> &lt;- CPluginFactory<br>
+			<b>Include File</b>:&nbsp; pluginfactory.h
+			</div>
+		</p>
+
+		<p>
+		<i>CPluginFactory</i> is a simple Plug-In factory implementation.
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#CPluginFactory_registerClass">CPluginFactory::registerClass</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="CPluginFactory_registerClass">
+		<h4>CPluginFactory::registerClass</h4>
+<div class=cpp>
+<pre>
+bool <b>registerClass</b> (
+	<a href="pluginbase.html#PClassInfo">PClassInfo</a>* info,
+	FUnknown* (*createFunc)(void*),
+	void* context = 0)
+</pre>
+</div>
+
+		<p>
+		Registers a Plug-In class, returns true for success.
+		</p>
+
+		<p>
+			<b><u>Parameters</u></b>:<br>
+			<br>
+			<table border=1 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+			<tr>
+				<td>info</td>
+				<td><a href="pluginbase.html#PClassInfo">Class information</a> (name, Unique Identifier,...)</i></td>
+			</tr>
+			<tr>
+				<td>createFunc</td>
+				<td>
+				C-style function, which can create an instance of this class
+				</td>
+			</tr>
+			<tr>
+				<td>context</td>
+				<td>
+				Variable passed on to the create function.
+				</td>
+			</tr>
+			</table>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="CPlugParams">
+		<h3>CPlugParams</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: none<br>
+			<b>Include File</b>:&nbsp; plugparams.h
+			</div>
+		</p>
+
+		<p>
+		<i>CPlugParams</i> is a helper class which maintains a set of parameters e.g. when
+		implementing a <a href="parameter.html#IPlugController">controller object</a>.
+		</p>
+
+		<p>
+		<b><u>Constructors</u>:</b><br>
+		<ul>
+			<li><a href="#CPlugParams_ctor">CPlugParams::CPlugParams</a>
+		</ul>
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#CPlugParams_add">CPlugParams::add</a>
+			<li><a href="#CPlugParams_add">CPlugParams::addParam</a>
+			<li><a href="#CPlugParams_add">CPlugParams::addIntParam</a>
+			<li><a href="#CPlugParams_add">CPlugParams::addStringParam</a>
+			<li><a href="#CPlugParams_add">CPlugParams::addListParam</a>
+
+			<li><a href="#CPlugParams_get">CPlugParams::total</a>
+			<li><a href="#CPlugParams_get">CPlugParams::at</a>
+			<li><a href="#CPlugParams_get">CPlugParams::getName</a>
+			<li><a href="#CPlugParams_get">CPlugParams::getParameter</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="CPlugParams_ctor">
+		<h4>Constructors</h4>
+<div class=cpp>
+<pre>
+CPlugParams::CPlugParams (<a href="parameter.html#IPlugController">IPlugController</a>* controller = 0)
+</pre>
+</div>
+
+		<p>
+		If you pass on a controller to the constructor, all parameters added will be automatically connected.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="CPlugParams_add">
+		<h4>Adding parameters</h4>
+
+<div class=cpp>
+<pre>
+<a href="#CParameter">CParameter</a>* <b>add</b> (CParameter* p, long tag, const char* name)
+<a href="#CParameter">CParameter</a>* <b>addParam</b> (long tag, const char* name)
+<a href="#CParameter">CIntParameter</a>* <b>addIntParam</b> (long tag, const char* name, long min = 0, long max = 1)
+<a href="#CParameter">CStringParameter</a>* <b>addStringParam</b> (long tag, const char* name)
+<a href="#CParameter">CStringListParameter</a>* <b>addListParam</b> (long tag, const char* name, const char** strings = 0)
+</pre>
+</div>
+
+		<p>
+		<table border=1 width=600 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<td width=150><b>add</b></td>
+			<td>Add a parameter object, created "outside"</td>
+		</tr>
+		<tr>
+			<td><b>addParam</b></td>
+			<td>Adds an On/Off parameter</td>
+		</tr>
+		<tr>
+			<td><b>addIntParam</b></td>
+			<td>Adds an integer parameter</td>
+		</tr>
+		<tr>
+			<td><b>addStringParam</b></td>
+			<td>Adds a string parameter</td>
+		</tr>
+		<tr>
+			<td><b>addListParam</b></td>
+			<td>Adds a list parameter</td>
+		</tr>
+		</table>
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		The container does not <i>addRef</i> the parameters on adding. They are released in the destructor.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="CPlugParams_get">
+		<h4>Get parameters</h4>
+<div class=cpp>
+<pre>
+long <b>total</b> const ();
+<a href="#CParameter">CParameter</a>* <b>at</b> (long index) const;
+bool <b>getName</b> (long index, char str[128]) const;
+CParameter* <b>getParameter</b> (const char* name) const;
+CParameter* <b>getParameter</b> (long tag) const;
+</pre>
+</div>
+
+		<p>
+		<table border=1 width=600 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<td width=150><b>total</b></td>
+			<td>Returns the number of parameters</td>
+		</tr>
+		<tr>
+			<td><b>at</b></td>
+			<td>Gets parameter by index</td>
+		</tr>
+		<tr>
+			<td><b>getName</b></td>
+			<td>Copies the name of the parameter at the specified index</td>
+		</tr>
+		<tr>
+			<td><b>getParameter</b> (const char*)</td>
+			<td>Gets parameter by name</td>
+		</tr>
+		<tr>
+			<td><b>getParameter</b> (long)</td>
+			<td>Gets parameter by tag</td>
+		</tr>
+		</table>
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		The index depends on the order in which you added the parameter objects. It may be different from the
+		parameter tag!
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="CParameter">
+		<h3>CParameter</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: CParameter <- <a href="parameter.html#IParameter">IParameter</a><br>
+			<b>Include File</b>:&nbsp; plugparams.h
+			</div>
+		</p>
+
+		<p>
+		The SDK provides basic parameter classes, which should meet most of your requirements:
+		</p>
+
+		<p>
+		<table border=1 width=600 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<td width=150><b>CParameter</b></td>
+			<td>two-state (On/Off) parameter base class</td>
+		</tr>
+		<tr>
+			<td><b>CIntParameter</b></td>
+			<td>integer parameter</td>
+		</tr>
+		<tr>
+			<td><b>CStringParameter</b></td>
+			<td>string parameter</td>
+		</tr>
+		<tr>
+			<td><b>CStringListParameter</b></td>
+			<td>string list parameter</td>
+		</tr>
+		</table>
+		</p>
+
+		<p>
+		<b><u>Additional Methods</u>:</b><br>
+		<br>
+		<table border=1 width=600 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<td width=150><b>enableUpdates</b></td>
+			<td>
+				enable/disable parameter updates
+			</td>
+		</tr>
+		<tr>
+			<td><b>initValue</b><br><b>initString</b></td>
+			<td>
+				set parameter value, without updating the target.
+				This avoids recursion when modifying a
+				parameter value inside a <a href="parameter.html#IPlugController_parameterChanged">parameterChanged</a> call.
+			</td>
+		</tr>
+		<tr>
+			<td><b>setNormalized</b><br><b>getNormalized</b></td>
+			<td>
+			set or get the parameter as normalized floating point value (range from 0.0 to 1.0)
+			</td>
+		</tr>
+		</table>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<br>
+		<hr noshade size=4>
+		<div align=center>
+		Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+		All Rights Reserved.
+		</div>
+		<div align="center"><font size="1">Last Modified:
+		<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+		<br>
+		<!---------------------------------------------------------------------------------------------->
+	</td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,627 @@
+<html>
+
+<head>
+	<title>Plug-In GUI</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="sdkdoc.css">
+</head>
+
+<body>
+<div>
+
+<table border=0 width=600>
+<tr>
+	<td>
+		<h1>Plug-In GUI</h1>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="Using_XML">
+		<h2>Plug-In GUI using XML</h2>
+
+		<p>
+		All recent Steinberg host applications provide the possibility to create a graphical editor
+		for a Plug-In via an XML description. I.e. the Plug-In is asked for a buffer with XML code
+		and a controller object and the host creates the corresponding control elements (buttons, sliders, menus, etc.).<br>
+		The controller has to provide parameter objects for each value "behind" a visible control.
+		It receives notifications when the user manipulates the value. Setting the value via a parameter object
+		updates the corresponding control.<br>
+		<br>
+		All interfaces involved in this mechanism can be found in iplugui.h:
+		</p>
+
+		<p>
+		<table border=1 width=600 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<td width=110><a href="#IUIFactory">IUIFactory</a></td>
+			<td>Provides the XML description and creates the controller object(s)</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="parameter.html#IPlugController">IPlugController</a><br>
+				<a href="parameter.html#IGenericPlugController">IGenericPlugController</a>
+			</td>
+			<td>Provides <a href="parameter.html#IParameter">IParameter</a> objects for each value,<br>is notified on value changes</td>
+		</tr>
+		<tr>
+			<td><a href="#IViewFactory">IViewFactory</a></td>
+			<td>
+				Creates Plug-In specific views (-&gt; <a href="#IPlugView">IPlugView</a>)<br>
+				Used to combine the XML technology with other GUI Toolkits (e.g. VSTGUI, MFC,...)
+			</td>
+		</tr>
+		</table>
+		</p>
+
+		<p>
+		The documentation of the XML tags used to describe a graphical user interface can be found in a separate document.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="VSTGUI">
+		<h2>Plug-In GUI using VSTGUI</h2>
+
+		<p>
+		Steinberg provides a free cross-platform User Interface Kit for VST Plug-Ins, called VSTGUI.
+		A special version of the library is available which can be used in combination with the
+		<i>VST Module Architecture</i>.
+		</p>
+
+		<p>
+		If you want to use your own GUI Toolkit (e.g. MFC or Win32 controls) you
+		have to implement the <a href="#IViewFactory">IViewFactory</a> or <a href="#IEditorFactory">IEditorFactory</a> interface and your own <a href="#IPlugView">IPlugView</a>.
+		</p>
+
+		<p>
+		<img src="gfx/more.gif">&nbsp; <a href="http://ygrabit.steinberg.de" target=_blank>Download VSTGUI</a>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="IUIFactory">
+		<h3>IUIFactory</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="funknown.html">FUnknown</a> &lt;- IUIFactory<br>
+			<b>Include File</b>:&nbsp; iplugui.h
+			</div>
+		</p>
+
+		<p>
+		The interface <i>IUIFactory</i> signals the ability of a Plug-In to provide XML code for its
+		editor (or inspector view, etc.).
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#IUIFactory_createController">IUIFactory::createController</a>
+			<li><a href="#IUIFactory_getViewDescription">IUIFactory::getViewDescription</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IUIFactory_createController">
+		<h4>IUIFactory::createController</h4>
+		<div class=cpp>tresult PLUGIN_API <b>createController</b> (char* name, <a href="parameter.html#IPlugController">IPlugController</a>** c)</div>
+
+		<p>
+		Create a controller object, <i>name</i> describes the context in which the controller will be used (e.g.
+		"editor", "inspector",...). On return, <i>c</i> should point
+		to the newly created controller object. It will be released by the host when it is no longer needed.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		Please note that the <i>IUIFactory</i> reference may be released BEFORE the controller is released.<br>
+		In most cases it is sufficient to implement <i>IUIFactory</i> and <i>IPlugController</i>
+		in the same object. In this case you could implement <i>IUIFactory::createController</i> with a simple
+		<i>queryInterface</i>.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IUIFactory_getViewDescription">
+		<h4>IUIFactory::getViewDescription</h4>
+<div class=cpp>
+<pre>
+tresult PLUGIN_API <b>getViewDescription</b> (
+		char* name,
+		char* templateName,
+		char* xml,
+		long* bufferSize)
+</pre>
+</div>
+
+		<p>
+		This method provides the XML code describing the Plug-In editor or inspector.
+		</p>
+
+		<p>
+			<b><u>Parameters</u></b>:<br>
+			<br>
+			<table border=1 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+			<tr>
+				<td>name</td>
+				<td>Context string for the requested XML code (e.g. "editor", "inspector",...)</i></td>
+			</tr>
+			<tr>
+				<td>templateName</td>
+				<td>
+				If the pointer is valid, the Plug-In has to copy the name of the XML template
+				to be created. The maximum length is 128 Bytes.
+				</td>
+			</tr>
+			<tr>
+				<td>xml</td>
+				<td>
+				If the pointer is valid, the Plug-In has to copy the XML code to the buffer.
+				The host determines the required memory amount first (see remarks).
+				</td>
+			</tr>
+			<tr>
+				<td>bufferSize</td>
+				<td>
+				If the pointer is valid, set this to the required memory amount for the XML code.
+				</td>
+			</tr>
+			</table>
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		<i>IUIFactory::getViewDescription</i> may be called several times, with some of the pointers set to NULL e.g.
+		to determine the required memory amount for the XML code (see host example below).<br>
+		<br>
+
+<div class=cpp>
+<pre>
+IUIFactory* factory; // a valid factory reference
+char templateName[128];
+long xmlSize;
+
+if(factory->getViewDescription ("editor", templateName, 0, &xmlSize) == kResultOk)
+{
+	char* xml = new char[xmlSize];
+	if(factory->getViewDescription ("editor", 0, xml, 0) == kResultOk)
+	{
+		// create the editor...
+	}
+	delete [] xml;
+}
+</pre>
+</div>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="IUIFactory2">
+		<h3>IUIFactory2</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="funknown.html">FUnknown</a> &lt;- <a href="#IUIFactory">IUIFactory</a> &lt;- IUIFactory2<br>
+			<b>Include File</b>:&nbsp; iplugui.h
+			</div>
+		</p>
+
+		<p>
+		<i>IUIFactory2</i> provides access to resources inside the Plug-In which then can be used inside
+		the User Interface XML description (e.g. button bitmaps, ...).
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#IUIFactory2_getResource">IUIFactory2::getResource</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IUIFactory2_getResource">
+		<h4>IUIFactory2::getResource</h4>
+<div class=cpp>
+<pre>
+tresult PLUGIN_API <b>getResource</b> (
+		const char* path,
+		char* buffer,
+		long* bufferSize)
+</pre>
+</div>
+
+		<p>
+		Copies the requested resource to a buffer.
+		</p>
+
+		<p>
+			<b><u>Parameters</u></b>:<br>
+			<br>
+			<table border=1 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+			<tr>
+				<td>path</td>
+				<td>
+					Resource path, as described in the XML code<br>
+					e.g. &lt;bitmap name="bitmap1" path="<i>path_for_getResource</i>"/&gt;
+				</td>
+			</tr>
+			<tr>
+				<td>buffer</td>
+				<td>
+				If the pointer is valid, the Plug-In has to copy the resource to the buffer.
+				The host determines the required memory amount first (see remarks).
+				</td>
+			</tr>
+			<tr>
+				<td>bufferSize</td>
+				<td>
+				If the pointer is valid, set this to the required memory amount for the resource.
+				</td>
+			</tr>
+			</table>
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		<i>IUIFactory2::getResource</i> may be called several times, with some of the pointers set to NULL e.g.
+		to determine the required memory amount for the resource.<br>
+		<br>
+		Typical resources are images in the following formats: Windows Bitmap (BMP), PNG, JPEG, Photoshop (PSD),...<br>
+		Windows: If the resources are located directly in the DLL, please make sure to include images
+		as raw resources (<u>RCDATA</u>, NOT as BITMAP)!!!
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="IViewFactory">
+		<h3>IViewFactory</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="funknown.html">FUnknown</a> &lt;- IViewFactory<br>
+			<b>Include File</b>:&nbsp; iplugui.h
+			</div>
+		</p>
+
+		<p>
+		This interface allows Plug-Ins to mix their own views with controls, created by the host application.<br>
+		It has to be implemented in the <a href="parameter.html#IPlugController">controller object</a>,
+		NOT in the <a href="#IUIFactory">UI factory object</a>!
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#IViewFactory_createView">IViewFactory::createView</a>
+			<li><a href="#IViewFactory_testCondition">IViewFactory::testCondition</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IViewFactory_createView">
+		<h4>IViewFactory::createView</h4>
+
+<div class=cpp>
+<pre>
+tresult PLUGIN_API <b>createView</b> (
+		const char* name,
+		<a href="datatypes.html#ViewRect">ViewRect</a>* rect,
+		<a href="#IPlugView">IPlugView</a>** view)
+</pre>
+</div>
+
+		<p>
+		Create a Plug-In specific view.
+		</p>
+
+		<p>
+			<b><u>Parameters</u></b>:<br>
+			<br>
+			<table border=1 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+			<tr>
+				<td>name</td>
+				<td>View name, as described in the XML template code</td>
+			</tr>
+			<tr>
+				<td>rect</td>
+				<td>View bounding rectangle, as described in the XML template code</td>
+			</tr>
+			<tr>
+				<td>view</td>
+				<td>
+				On return, <i>view</i> has to point to the newly created view object.
+				It will be released by the host when no longer needed.
+				</td>
+			</tr>
+			</table>
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		Example of XML code and the corresponding <i>IViewFactory::createView</i> call:<br>
+		<br>
+
+<div class=cpp>
+<pre>
+<u>XML code</u>:
+
+	&lt;view name="MyCustomView" size="0,0,500,300"/&gt;
+
+<u>Function call</u>:
+
+	IViewFactory* viewFactory; // a valid view factory reference
+	ViewRect rect (0, 0, 500, 300);
+
+	IPlugView* view;
+	if(viewFactory->createView ("MyCustomView", &rect, &view) == kResultOk)
+	{
+		...
+		view->release ();
+	}
+</pre>
+</div>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IViewFactory_testCondition">
+		<h4>IViewFactory::testCondition</h4>
+
+		<div class=cpp>tresult PLUGIN_API <b>testCondition</b> (const char* condition)</div>
+
+		<p>
+		Test a condition described in XML code.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		Example of a condition and the corresponding <i>IViewFactory::testCondition</i> calls:<br>
+		<br>
+
+<div class=cpp>
+<pre>
+<u>XML code</u>:
+
+	&lt;variant condition="mono AND NOT stereo"/&gt;
+	...
+	&lt;/variant&gt;
+
+<u>Function calls</u>:
+
+	IViewFactory* viewFactory; // a valid view factory reference
+
+	if(viewFactory->testCondition ("mono") && !viewFactory->testCondition ("stereo"))
+	{
+		// condition is true
+	}
+</pre>
+</div>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="IPlugView">
+		<h3>IPlugView</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="funknown.html">FUnknown</a> &lt;- IPlugView<br>
+			<b>Include File</b>:&nbsp; iplugui.h
+			</div>
+		</p>
+
+		<p>
+		<i>IPlugView</i> represents a Plug-In specific view. It is created by
+		<a href="#IViewFactory_createView">IViewFactory::createView</a> or
+		<a href="#IEditorFactory_createEditor">IEditorFactory::createEditor</a>.
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#IPlugView_attached">IPlugView::attached</a>
+			<li><a href="#IPlugView_removed">IPlugView::removed</a>
+			<li><a href="#IPlugView_idle">IPlugView::idle</a>
+			<li><a href="#IPlugView_onWheel">IPlugView::onWheel</a>
+			<li><a href="#IPlugView_onKey">IPlugView::onKey</a>
+			<li><a href="#IPlugView_onSize">IPlugView::onSize</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPlugView_attached">
+		<h4>IPlugView::attached</h4>
+
+		<div class=cpp>tresult PLUGIN_API <b>attached</b> (void* parent)</div>
+
+		<p>
+		The view was attached to a parent window.<br>
+		The <i>parent</i> datatype is platform-dependent: On Windows it is a HWND, on MAC it is a WindowRef.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		Windows : You have to create a child window here which receives mouse and painting messages.<br>
+		Mac OS X : You have to attach a HIView to the parent window.
+		<br>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPlugView_removed">
+		<h4>IPlugView::removed</h4>
+
+		<div class=cpp>tresult PLUGIN_API <b>removed</b> ()</div>
+
+		<p>
+		The view was removed from its parent window.<br>
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		Windows: You have to destroy the child window here.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPlugView_idle">
+		<h4>IPlugView::idle</h4>
+
+		<div class=cpp>tresult PLUGIN_API <b>idle</b> ()</div>
+
+		<p>
+		Host gives some idle time to the Plug-In view.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		This method is called periodically, it can be used e.g. to do deferred updates, ...
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPlugView_onWheel">
+		<h4>IPlugView::onWheel</h4>
+
+		<div class=cpp>tresult PLUGIN_API <b>onWheel</b> (float distance)</div>
+
+		<p>
+		Receive a mouse wheel event, <i>distance</i> is positive or negative to indicate the scroll direction.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPlugView_onKey">
+		<h4>IPlugView::onKey</h4>
+
+		<div class=cpp>tresult PLUGIN_API <b>onKey</b> (char asciiKey, long keyMsg, long modifiers)</div>
+
+		<p>
+		Receive a key event; <i>keyMsg</i> and <i>modifier</i> values are defined in plugkeycodes.h.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPlugView_onSize">
+		<h4>IPlugView::onSize</h4>
+
+		<div class=cpp>tresult PLUGIN_API <b>onSize</b> (<a href="datatypes.html#ViewRect">ViewRect</a>* newSize)</div>
+
+		<p>
+		The view was moved or sized. This happens if the parent window is moved or resized and some of the
+		auto-size styles were specified in the XML code of this view.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		Windows: You should resize the child window here.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="IEditorFactory">
+		<h3>IEditorFactory</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="funknown.html">FUnknown</a> &lt;- IEditorFactory<br>
+			<b>Include File</b>:&nbsp; iplugui.h
+			</div>
+		</p>
+
+		<p>
+		IEditorFactory allows to build a Plug-In editor completely based on a another GUI toolkit
+		(e.g. VSTGUI, MFC, Win32, etc.), without using the XML features described above.
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#IEditorFactory_getEditorSize">IEditorFactory::getEditorSize</a>
+			<li><a href="#IEditorFactory_createEditor">IEditorFactory::createEditor</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IEditorFactory_getEditorSize">
+		<h4>IEditorFactory::getEditorSize</h4>
+
+		<div class=cpp>tresult PLUGIN_API <b>getEditorSize</b> (const char* name, <a href="datatypes.html#ViewRect">ViewRect</a>* rect)</div>
+
+		<p>
+		The host requests the size of the editor, <i>name</i> specifies the context in which the editor will be used (usually "editor").
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IEditorFactory_createEditor">
+		<h4>IEditorFactory::createEditor</h4>
+
+		<div class=cpp>tresult PLUGIN_API <b>createEditor</b> (const char* name, ViewRect* rect, <a href="#IPlugView">IPlugView</a>** editor)</div>
+
+		<p>
+		Create the Plug-In editor.
+		</p>
+
+		<p>
+			<b><u>Parameters</u></b>:<br>
+			<br>
+			<table border=1 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+			<tr>
+				<td>name</td>
+				<td>context string, usually "editor"</td>
+			</tr>
+			<tr>
+				<td>rect</td>
+				<td>
+					size of the editor to be created.<br>
+					The host will pass the size queried via <i>IEditorFactory::getEditorSize</i>
+					back to this method.
+				</td>
+			</tr>
+			<tr>
+				<td>editor</td>
+				<td>
+				On return, <i>editor</i> has to point to the newly created editor object.
+				It will be released by the host when no longer needed.
+				</td>
+			</tr>
+			</table>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<br>
+		<hr noshade size=4>
+		<div align=center>
+		Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+		All Rights Reserved.
+		</div>
+		<div align="center"><font size="1">Last Modified:
+		<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+	<br>
+		<!---------------------------------------------------------------------------------------------->
+	</td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

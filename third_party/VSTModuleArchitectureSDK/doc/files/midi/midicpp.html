@@ -1,0 +1,216 @@
+<html>
+
+<head>
+	<title>MIDI C++ Classes</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="../sdkdoc.css">
+</head>
+
+<body>
+<div>
+
+<table border=0 width=600>
+<tr>
+	<td>
+		<h1>MIDI C++ Classes</h1>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="CMidiEffect">
+		<h3>CMidiEffect</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>:
+				<a href="midieffect.html#IMidiEffect">IMidiEffect</a>,
+				<a href="../parameter.html#IGenericPlugController">IGenericPlugController</a>,
+				<a href="../plugstorage.html#IPersistentChunk">IPersistentChunk</a>,
+				<a href="../plugui.html#IUIFactory2">IUIFactory2</a>,
+				<a href="../plugui.html#IViewFactory">IViewFactory</a><br>
+			<b>Include File</b>:&nbsp; midieffect.h
+			</div>
+		</p>
+
+		<p>
+		<i>CMidiEffect</i> is a C++ class which implements all interfaces required for
+		a MIDI effect to work properly. You should derive your own effect class from it.
+		</p>
+
+		<p>
+		<b><u>Members</u>:</b><br>
+		<br>
+		<table border=1 width=600 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<td width=110><a href="../commoncpp.html#CPlugParams">CPlugParams</a> <b>params</b></td>
+			<td>
+				This member holds the parameter objects of the MIDI effect.<br>
+			</td>
+		</tr>
+		</table>
+		</p>
+
+		<p>
+		<b><u>Constructors</u>:</b><br>
+		<ul>
+			<li><a href="#CMidiEffect_ctor">CMidiEffect::CMidiEffect</a>
+		</ul>
+		</p>
+
+		<p>
+		<b><u>Additional Methods</u>:</b><br>
+		<ul>
+			<li><a href="#CMidiEffect_config">CMidiEffect::presetsAreChunks</a>
+		</ul>
+		</p>
+
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="CMidiEffect_ctor">
+		<h4>Constructors</h4>
+<div class=cpp>
+<pre>
+CMidiEffect::CMidiEffect (const char* storageUID = 0)
+</pre>
+</div>
+		<p>
+		When using chunk storage, the Class Identifier needs to be known for associating the chunk data
+		with the MIDI effect (see <a href="../plugstorage.html#IPersistentChunk">IPersistentChunk</a>).
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="CMidiEffect_config">
+		<h4>Configuration</h4>
+
+		<p>
+		<table border=1 width=600 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<td width=200 valign=top><b>presetsAreChunks</b> (bool)</td>
+			<td>
+				Advice to expose <a href="../plugstorage.html#IPersistentChunk">IPersistentChunk</a> to the host.<br>
+				To be called in Ctor of derived class.<br>
+				<br>
+				<img src="../gfx/more.gif"> See also <a href="../plugstorage.html">Plug-In Storage: Chunks or Parameters?</a>
+			</td>
+		</tr>
+		<tr>
+			<td width=200 valign=top><b>setResourceID</b> (const CResourceID&)</td>
+			<td>
+				Set the resource identifier of editor XML script.<br>
+				To be called in Ctor of derived class.<br>
+				<br>
+				<img src="../gfx/more.gif"> See also <a href="../plugui.html">Plug-In GUI using XML</a>
+			</td>
+		</tr>
+		</table>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="CMidiEventQueue">
+		<h3>CMidiEventQueue</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: CLinkedList &lt;- CMidiEventQueue<br>
+			<b>Include File</b>:&nbsp; eventqueue.h
+			</div>
+		</p>
+
+		<p>
+		<i>CMidiEventQueue</i> is a time-sorted MIDI event queue which can hold events of type <i>IMEObjectID</i>.
+		It needs an <a href="meaccessor.html">IMEAccessor</a> to work properly.
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#CMidiEventQueue_setAccessor">CMidiEventQueue::setAccessor</a>
+			<li><a href="#CMidiEventQueue_addEvent">CMidiEventQueue::addEvent</a>
+			<li><a href="#CMidiEventQueue_addEventCopy">CMidiEventQueue::addEventCopy</a>
+			<li><a href="#CMidiEventQueue_retrieveEvent">CMidiEventQueue::retrieveEvent</a>
+			<li><a href="#CMidiEventQueue_empty">CMidiEventQueue::empty</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="CMidiEventQueue_setAccessor">
+		<h4>CMidiEventQueue::setAccessor</h4>
+		<div class=cpp>void <b>setAccessor</b> (<a href="meaccessor.html">IMEAccessor</a>* a)</div>
+
+		<p>
+		Sets a new accessor for this queue.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="CMidiEventQueue_addEvent">
+		<h4>CMidiEventQueue::addEvent</h4>
+		<div class=cpp>bool <b>addEvent</b> (IMEObjectID event)</div>
+
+		<p>
+		Adds one event time-sorted to the queue.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="CMidiEventQueue_addEventCopy">
+		<h4>CMidiEventQueue::addEventCopy</h4>
+		<div class=cpp>bool <b>addEventCopy</b> (IMEObjectID event)</div>
+
+		<p>
+		Adds a copy of the event time-sorted to the queue.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="CMidiEventQueue_retrieveEvent">
+		<h4>CMidiEventQueue::retrieveEvent</h4>
+		<div class=cpp>IMEObjectID <b>retrieveEvent</b> (long toPPQ)</div>
+
+		<p>
+		Returns (and removes) the first event with a timestamp smaller than <i>toPPQ</i>, or NULL if no event
+		matches this criterion.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		<font color=red>
+		All events created inside the Plug-In have to be destroyed with
+		<a href="meaccessor.html#IMEAccessor_destroyEvent">IMEAccessor::destroyEvent</a>!<br>
+		</font>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="CMidiEventQueue_empty">
+		<h4>CMidiEventQueue::empty</h4>
+		<div class=cpp>void <b>empty</b> ()</div>
+
+		<p>
+		Empties the queue. All events will be destroyed via
+		<a href="meaccessor.html#IMEAccessor_destroyEvent">IMEAccessor::destroyEvent</a>.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<br>
+		<hr noshade size=4>
+		<div align=center>
+		Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+		All Rights Reserved.
+		</div>
+		<div align="center"><font size="1">Last Modified:
+		<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+		<br>
+		<!---------------------------------------------------------------------------------------------->
+	</td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

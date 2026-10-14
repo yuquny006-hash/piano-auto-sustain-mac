@@ -1,0 +1,565 @@
+<html>
+
+<head>
+	<title>IMEAccessor</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan, Werner Kracht">
+	<link rel="stylesheet" type="text/css" href="../sdkdoc.css">
+</head>
+
+<body>
+<div>
+
+<table border=0 width=600>
+<tr>
+	<td>
+		<h1>IMEAccessor</h1>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="IMEAccessor">
+		<h3>IMEAccessor</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="../funknown.html">FUnknown</a> &lt;- IMEAccessor<br>
+			<b>Include File</b>:&nbsp; imidieffect.h
+			</div>
+		</p>
+
+		<p>
+		You can query the <i>context</i> variable passed on by
+		<a href="../pluginbase.html#IPluginBase_initialize">IPluginBase::initialize</a> for a
+		reference to this interface.
+		</p>
+
+		<p>
+		<b><u>Event creation and output</u>:</b>
+		<ul>
+			<li><a href="#IMEAccessor_createMidiEvent">IMEAccessor::createMidiEvent</a>
+			<li><a href="#IMEAccessor_createSysexEvent">IMEAccessor::createSysexEvent</a>
+			<li><a href="#IMEAccessor_duplicateMidiEvent">IMEAccessor::duplicateMidiEvent</a>
+			<li><a href="#IMEAccessor_destroyEvent">IMEAccessor::destroyEvent</a>
+			<li><a href="#IMEAccessor_passToOutputQueue">IMEAccessor::passToOutputQueue</a>
+			<li><a href="#IMEAccessor_passToOutput">IMEAccessor::passToOutput</a>
+		</ul>
+		</p>
+
+		<p>
+		<b><u>Event manipulation</u>:</b>
+		<ul>
+			<li><a href="#IMEAccessor_StartLength">IMEAccessor::setStart</a>
+			<li><a href="#IMEAccessor_StartLength">IMEAccessor::getStart</a>
+			<li><a href="#IMEAccessor_StartLength">IMEAccessor::setLength</a>
+			<li><a href="#IMEAccessor_StartLength">IMEAccessor::getLength</a>
+			<li><a href="#IMEAccessor_Immediate">IMEAccessor::setImmediateEvent</a>
+			<li><a href="#IMEAccessor_Immediate">IMEAccessor::isImmediateEvent</a>
+			<li><a href="#IMEAccessor_Channel">IMEAccessor::setChannel</a>
+			<li><a href="#IMEAccessor_Channel">IMEAccessor::getChannel</a>
+			<li><a href="#IMEAccessor_StatusData">IMEAccessor::getStatus</a>
+			<li><a href="#IMEAccessor_StatusData">IMEAccessor::setStatus</a>
+			<li><a href="#IMEAccessor_StatusData">IMEAccessor::getData1</a>
+			<li><a href="#IMEAccessor_StatusData">IMEAccessor::setData1</a>
+			<li><a href="#IMEAccessor_StatusData">IMEAccessor::getData2</a>
+			<li><a href="#IMEAccessor_StatusData">IMEAccessor::setData2</a>
+			<li><a href="#IMEAccessor_StatusData">IMEAccessor::getData3</a>
+			<li><a href="#IMEAccessor_StatusData">IMEAccessor::setData3</a>
+			<li><a href="#IMEAccessor_MicroTuning">IMEAccessor::getMicroTuning</a>
+			<li><a href="#IMEAccessor_MicroTuning">IMEAccessor::setMicroTuning</a>
+		</ul>
+		</p>
+
+		<p>
+		<b><u>Context information</u>:</b>
+		<ul>
+			<li><a href="#IMEAccessor_getMidiChannel">IMEAccessor::getMidiChannel</a>
+			<li><a href="#IMEAccessor_Interval">IMEAccessor::getInterval</a>
+			<li><a href="#IMEAccessor_Interval">IMEAccessor::setInterval</a>
+			<li><a href="#IMEAccessor_getContextInfo">IMEAccessor::getContextInfo</a>
+			<li><a href="#IMEAccessor_setCanPlayInStop">IMEAccessor::setCanPlayInStop</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor_createMidiEvent">
+		<h4>IMEAccessor::createMidiEvent</h4>
+<div class=cpp>
+<pre>
+IMEObjectID PLUGIN_API <b>createMidiEvent</b> (
+		<a href="metypes.html#MidiStatus">MidiStatus</a> type,
+		long data1,
+		long data2,
+		long length)
+</pre>
+</div>
+
+		<p>
+		Creates a new MIDI event with the specified <a href="metypes.html#MidiStatus">status</a> and data
+		bytes of length <i>length</i> (in PPQ).<br>
+		In case of success, the return value is the handle of the new event. Otherwise the function returns NULL.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		<font color=red>
+		All events created inside the Plug-In have to be destroyed with
+		<a href="#IMEAccessor_destroyEvent">IMEAccessor::destroyEvent</a>!!!<br>
+		</font>
+		<br>
+		You can determinte the selected MIDI channel for this effect with
+		<a href="#IMEAccessor_getMidiChannel">IMEAccessor::getMidiChannel</a>.
+		You have to bitwise-OR the status byte with the MIDI channel (see the following example) or call
+		<a href="meaccessor.html#IMEAccessor_Channel">IMEAccessor::setChannel</a> afterwards.
+		If the Plug-In is used as a send effect and no channel is selected in the host application ("Any"),
+		the Plug-In events are corrected automatically.<br>
+		<br>
+
+<div class=cpp>
+<pre>
+IMEAccessor* accessor; // a valid accessor reference
+
+char status = (char)kNoteOn;
+long channel = accessor->getMidiChannel ();
+if(channel > 0)
+	status |= (channel & 0xF);
+
+IMEObjectID event = accessor->createMidiEvent ((MidiStatus)status, ... )
+</pre>
+</div>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor_createSysexEvent">
+		<h4>IMEAccessor::createSysexEvent</h4>
+		<div class=cpp>IMEObjectID PLUGIN_API <b>createSysexEvent</b> (unsigned char* data, long size)</div>
+
+		<p>
+		Creates a new SysEx ("System Exclusive") event with the specified data and size.<br>
+		In case of success, the return value is the handle of the new event. Otherwise the function returns NULL.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		<font color=red>
+		The event has to be destroyed with
+		<a href="#IMEAccessor_destroyEvent">IMEAccessor::destroyEvent</a>!<br>
+		</font>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor_duplicateMidiEvent">
+		<h4>IMEAccessor::duplicateMidiEvent</h4>
+		<div class=cpp>IMEObjectID PLUGIN_API <b>duplicateMidiEvent</b> (IMEObjectID event)</div>
+
+		<p>
+		Creates a copy of the specified MIDI event. In case of success, the return value is the handle of
+		the new event. Otherwise the function returns NULL.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		<font color=red>
+		The event has to be destroyed with
+		<a href="#IMEAccessor_destroyEvent">IMEAccessor::destroyEvent</a>!<br>
+		</font>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor_destroyEvent">
+		<h4>IMEAccessor::destroyEvent</h4>
+		<div class=cpp>tresult PLUGIN_API <b>destroyEvent</b> (IMEObjectID event)</div>
+
+		<p>
+		Destroys the specified event.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor_passToOutputQueue">
+		<h4>IMEAccessor::passToOutputQueue</h4>
+		<div class=cpp>tresult PLUGIN_API <b>passToOutputQueue</b> (IMEObjectID event)</div>
+
+		<p>
+		Passes the specified event to the host's output queue of the effect.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor_passToOutput">
+		<h4>IMEAccessor::passToOutput</h4>
+		<div class=cpp>tresult PLUGIN_API <b>passToOutput</b> (IMEObjectID event)</div>
+
+		<p>
+		Passes the specified event directly on to the output. This method is used for immediate events
+		("MIDI Thru").
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor_StartLength">
+		<h4>Event start and length</h4>
+<div class=cpp>
+<pre>
+tresult PLUGIN_API <b>setStart</b>  (IMEObjectID event, long ppq)
+long    PLUGIN_API <b>getStart</b>  (IMEObjectID event)
+tresult PLUGIN_API <b>setLength</b> (IMEObjectID event, long ppq)
+long    PLUGIN_API <b>getLength</b> (IMEObjectID event)
+</pre>
+</div>
+		<p>
+		The following methods are used to set or determine the start and length of a MIDI event (NoteOn) in PPQ.
+		</p>
+
+		<p>
+		<table border=1 width=600 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<td width=200><b>IMEAccessor::setStart</b></td>
+			<td>Sets the  start position</td>
+		</tr>
+		<tr>
+			<td width><b>IMEAccessor::getStart</b></td>
+			<td>Returns the start position</td>
+		</tr>
+		<tr>
+			<td width><b>IMEAccessor::setLength</b></td>
+			<td>Sets the event length</td>
+		</tr>
+		<tr>
+			<td width><b>IMEAccessor::getLength</b></td>
+			<td>Returns the event length</td>
+		</tr>
+		</table>
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		The length may be undefined for some immediate events (NoteOff is pending),
+		<i>IMEAccessor::getLength</i> returns -1 in this case!
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor_Immediate">
+		<h4>Event immediate state</h4>
+<div class=cpp>
+<pre>
+tresult PLUGIN_API <b>setImmediateEvent</b> (IMEObjectID event, bool state)
+bool    PLUGIN_API <b>isImmediateEvent</b>  (IMEObjectID event)
+</pre>
+</div>
+		<p>
+		The following methods are used to set or determine the immediate state of a MIDI event.
+		</p>
+
+		<p>
+		<table border=1 width=600 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<td width=200><b>IMEAccessor::setImmediateEvent</b></td>
+			<td>Sets the event state to immediate</td>
+		</tr>
+		<tr>
+			<td width><b>IMEAccessor::isImmediateEvent</b></td>
+			<td>Determines whether the specified event is an immediate event ("MIDI Thru").</td>
+		</tr>
+		</table>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor_Channel">
+		<h4>Event channel</h4>
+<div class=cpp>
+<pre>
+tresult PLUGIN_API <b>setChannel</b> (IMEObjectID event, int channel)
+int     PLUGIN_API <b>getChannel</b> (IMEObjectID event)
+</pre>
+</div>
+		<p>
+		The following methods are used to set or determine the channel of a MIDI event.
+		</p>
+
+		<p>
+		<table border=1 width=600 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<td width=200><b>IMEAccessor::setChannel</b></td>
+			<td>Sets the MIDI channel</td>
+		</tr>
+		<tr>
+			<td width><b>IMEAccessor::getChannel</b></td>
+			<td>Returns the MIDI channel</td>
+		</tr>
+		</table>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor_StatusData">
+		<h4>Event status and data</h4>
+<div class=cpp>
+<pre>
+<a href="metypes.html#MidiStatus">MidiStatus</a> PLUGIN_API <b>getStatus</b> (IMEObjectID event)
+tresult    PLUGIN_API <b>setStatus</b> (IMEObjectID event, <a href="metypes.html#MidiStatus">MidiStatus</a> status)
+int        PLUGIN_API <b>getData1</b>  (IMEObjectID event)
+tresult    PLUGIN_API <b>setData1</b>  (IMEObjectID event, int data)
+int        PLUGIN_API <b>getData2</b>  (IMEObjectID event)
+tresult    PLUGIN_API <b>setData2</b>  (IMEObjectID event, int data)
+int        PLUGIN_API <b>getData3</b>  (IMEObjectID event)
+tresult    PLUGIN_API <b>setData3</b>  (IMEObjectID event, int data)
+</pre>
+</div>
+		<p>
+		The following methods are used to set or determine the status and data bytes of a MIDI event.
+		</p>
+
+		<p>
+		<table border=1 width=600 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<td width=200><b>IMEAccessor::getStatus</b></td>
+			<td>Returns the status byte</td>
+		</tr>
+		<tr>
+			<td width><b>IMEAccessor::setStatus</b></td>
+			<td>Sets the status byte</td>
+		</tr>
+		<tr>
+			<td width><b>IMEAccessor::getData1</b></td>
+			<td>Returns the first data byte</td>
+		</tr>
+		<tr>
+			<td width><b>IMEAccessor::setData1</b></td>
+			<td>Sets the first data byte</td>
+		</tr>
+		<tr>
+			<td width><b>IMEAccessor::getData2</b></td>
+			<td>Returns the second data byte</td>
+		</tr>
+		<tr>
+			<td width><b>IMEAccessor::setData2</b></td>
+			<td>Sets the second data byte</td>
+		</tr>
+		<tr>
+			<td width><b>IMEAccessor::getData3</b></td>
+			<td>Returns the third data byte</td>
+		</tr>
+		<tr>
+			<td width><b>IMEAccessor::setData3</b></td>
+			<td>Sets the third data byte</td>
+		</tr>
+		</table>
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		The third data byte is used for the NoteOff Velocity of a Note event. It is ignored otherwise.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor_MicroTuning">
+		<h4>Event micro tuning</h4>
+<div class=cpp>
+<pre>
+int     PLUGIN_API <b>getMicroTuning</b> (IMEObjectID event)
+tresult PLUGIN_API <b>setMicroTuning</b> (IMEObjectID event, int cent)
+</pre>
+</div>
+		<p>
+		The following methods are used to set or determine the micro tuning of a MIDI event.
+		The maximum range is +/- 100 cents.
+		</p>
+
+		<p>
+		<table border=1 width=600 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<td width=200><b>IMEAccessor::getMicroTuning</b></td>
+			<td>Returns the micro tuning (in cents)</td>
+		</tr>
+		<tr>
+			<td width><b>IMEAccessor::setMicroTuning</b></td>
+			<td>Sets the micro tuning (in cents)</td>
+		</tr>
+		</table>
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		The micro tuning only affects VST intstruments (if they support it -
+		e.g. HALion).
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor_getMidiChannel">
+		<h4>IMEAccessor::getMidiChannel</h4>
+		<div class=cpp>long	PLUGIN_API <b>getMidiChannel</b> ()</div>
+
+		<p>
+		Returns the selected MIDI channel of the track.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		The return value can be -1 to indicate that no MIDI channel is specified ("Any").
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor_Interval">
+		<h4>Processing Interval</h4>
+<div class=cpp>
+<pre>
+long    PLUGIN_API <b>getInterval</b> ()
+tresult PLUGIN_API <b>setInterval</b> (long interval)
+</pre>
+</div>
+		<p>
+		The following methods are used to set or determine the interval in which the MIDI effect is processed
+		(see <a href="midieffect.html#IMidiEffect_playAction">IMidiEffect::playAction</a>).
+		</p>
+
+		<p>
+		<table border=1 width=600 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<td width=200><b>IMEAccessor::getInterval</b></td>
+			<td>Returns the interval in milliseconds</td>
+		</tr>
+		<tr>
+			<td width><b>IMEAccessor::setInterval</b></td>
+			<td>Sets the interval (in ms)</td>
+		</tr>
+		</table>
+		</p>
+
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+ 		<i>IMEAccessor::setInterval</i> works together with
+ 		<a href="#IMEAccessor_setCanPlayInStop">IMEAccessor::setCanPlayInStop</a>, the processing interval can be set
+   		here. If <i>IMEAccessor::setCanPlayInStop</i> has not been called with state set to true,
+		the call to <i>IMEAccessor::setInterval</i> has no effect.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor_getContextInfo">
+		<h4>IMEAccessor::getContextInfo</h4>
+		<div class=cpp>tresult PLUGIN_API <b>getContextInfo</b> (long ppq, <a href="metypes.html#MidiContextInfo">MidiContextInfo</a>* info)</div>
+
+		<p>
+		Fills a <i>MidiContextInfo</i> structure with metrical information for the specified PPQ position.<br>
+		For a detailed description of the data structure click <a href="metypes.html#MidiContextInfo">here</a>.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor_setCanPlayInStop">
+		<h4>IMEAccessor::setCanPlayInStop</h4>
+		<div class=cpp>tresult PLUGIN_API <b>setCanPlayInStop</b> (int state)</div>
+
+		<p>
+		Informs the host that the Plug-In can play in Stop Mode.
+		This call must be made during the initialization process of the Plug-In.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="IMEAccessor2">
+		<h3>IMEAccessor2</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="../funknown.html">FUnknown</a> &lt;- <a href="#IMEAccessor">IMEAccessor</a> &lt;- IMEAccessor2<br>
+			<b>Include File</b>:&nbsp; imidieffect.h
+			</div>
+		</p>
+
+		<p>
+		You can query the <i>context</i> variable passed on in
+		<a href="../pluginbase.html#IPluginBase_initialize">IPluginBase::initialize</a> for a
+		reference to this interface.
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#IMEAccessor2_receiveMidiEvent">IMEAccessor2::receiveMidiEvent</a>
+			<li><a href="#IMEAccessor2_getSysexSize">IMEAccessor2::getSysexSize</a>
+			<li><a href="#IMEAccessor2_getSysexMessage">IMEAccessor2::getSysexMessage</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor2_receiveMidiEvent">
+		<h4>IMEAccessor2::receiveMidiEvent</h4>
+		<div class=cpp>tresult PLUGIN_API <b>receiveMidiEvent</b> (IMEObjectID event)</div>
+
+		<p>
+		Sends a MIDI event to the host application.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		The events can be recorded in Cubase SX by selecting "MIDI Plug-Ins Port" as input of
+		a MIDI channel.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor2_getSysexSize">
+		<h4>IMEAccessor2::getSysexSize</h4>
+		<div class=cpp>int PLUGIN_API <b>getSysexSize</b> (IMEObjectID event)</div>
+
+		<p>
+		Returns the data size of the SysEx event or zero, if the handle does not point to an event of this type.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMEAccessor2_getSysexMessage">
+		<h4>IMEAccessor2::getSysexMessage</h4>
+		<div class=cpp>void* PLUGIN_API <b>getSysexMessage</b> (IMEObjectID event)</div>
+
+		<p>
+		Gets a pointer to the data of a SysEx message. If the specified event handle is no SysEx event,
+		the return value is NULL.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		If you need to copy the SysEx data, you can determine the data size by calling
+		<a href="#IMEAccessor2_getSysexSize">IMEAccessor2::getSysexSize</a>.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<br>
+		<hr noshade size=4>
+		<div align=center>
+		Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+		All Rights Reserved.
+		</div>
+		<div align="center"><font size="1">Last Modified:    
+		<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+		<br>
+		<!---------------------------------------------------------------------------------------------->
+	</td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

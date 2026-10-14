@@ -1,0 +1,379 @@
+<html>
+
+<head>
+	<title>Plug-In Factory</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="sdkdoc.css">
+</head>
+
+<body>
+<div>
+
+<table border=0 width=600>
+<tr>
+	<td>
+		<h1>Plug-In Basics</h1>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="GetPluginFactory">
+		<h2>GetPluginFactory</h2>
+
+		<div class=cpp>extern "C" PLUGIN_API <a href="#IPluginFactory">IPluginFactory</a>* <b>GetPluginFactory</b> ();</div>
+
+		<p>
+		From the host's point of view a Plug-In Module is a factory which can create a certain kind of object(s).
+		The interface <a href="#IPluginFactory">IPluginFactory</a> provides methods to get information about the classes exported by the
+		Plug-In and a mechanism to create instances of these classes.<br>
+		<br>
+		The host calls GetPluginFactory to get a pointer to an <a href="#IPluginFactory">IPluginFactory</a> object.
+		The SDK already implements a Plug-In factory (see <a href="commoncpp.html#CPluginFactory">CPluginFactory</a> in pluginfactory.h)
+		that should meet your requirements. All you have to do is to register your class
+		information once with <i>CPluginFactory::registerClass</i>.
+		</p>
+
+<div class=cpp>
+<pre>
+PLUGIN_API IPluginFactory* GetPluginFactory ()
+{
+	if(!gPluginFactory)
+	{
+		gPluginFactory = new CPluginFactory (factoryInfo);
+
+		//register classes here...
+		gPluginFactory->registerClass (pluginClass, myCreateFunc, 0);
+	}
+	else
+		gPluginFactory->addRef ();
+
+	return gPluginFactory;
+}
+</pre>
+</div>
+		<p>
+		To get this code compiled, you need factory information of type <i>PFactoryInfo</i>,
+		class information of type <i>PClassInfo</i> (both declared in ipluginbase.h)
+		and a function to create the class instance.
+		</p>
+
+<div class=cpp>
+<pre>
+struct <b>PFactoryInfo</b><a name="PFactoryInfo">
+{
+	char vendor[64];	// e.g. "Steinberg Media Technologies"
+	char url[256];	// e.g. "http://www.steinberg.de"
+	char email[128];	// e.g. "info@steinberg.de"
+	long flags;	// see <a href="#IPluginFactory">IPluginFactory::getFactoryInfo</a>
+}
+
+struct <b>PClassInfo</b><a name="PClassInfo">
+{
+	char cid[16];
+	long cardinality;
+	char category[kCategorySize];
+	char name[kNameSize];
+};
+</pre>
+</div>
+
+		<p>
+		<table border=1 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<th>Member</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td>PClassInfo::cid</td>
+			<td>
+			Class identifier used in <a href="#IPluginFactory_createInstance">IPluginFactory::createInstance.</a>
+			Every class implementation must have its own identifier.
+			On Windows you can use e.g. the Visual Studio Tool Guidgen.exe to generate it.
+			</td>
+		</tr>
+		<tr>
+			<td>PClassInfo::cardinality</td>
+			<td>
+			Currently ignored, you should set this to <i>PClassInfo::kManyInstances</i>.
+			</td>
+		</tr>
+		<tr>
+			<td>PClassInfo::category</td>
+			<td>
+			Category string of the class, e.g. <i>kMidiModuleClass</i> for MIDI effects,...<br>
+			The host relies on the category given here and expects e.g. an object
+			with an IMidiEffect interface if the string is kMidiModuleClass.
+			</td>
+		</tr>
+		<tr>
+			<td>PClassInfo::name</td>
+			<td>
+			Class name visible to the user e.g. "My first Plug-In"
+			</td>
+		</tr>
+		</table>
+		</p>
+
+		<p>
+		The create function has to look something like this:
+		</p>
+
+<div class=cpp>
+<pre>
+FUnknown* myCreateFunc (void* context)
+{
+	return (IPluginBase*)new CMyPlugin ();
+}
+</pre>
+</div>
+
+		<p>
+		The context value is the last parameter passed to <i>CPluginFactory::registerClass</i>.
+		It has no pre-defined meaning, you can use it for whatever you want.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="DEF">
+		<h2>Exporting GetPluginFactory</h2>
+
+		<p>
+		To make the function <i>GetPluginFactory</i> "visible" to the host application, it has to be
+		exported.<br>
+		<br>
+		In Microsoft&reg; Visual C++ you need to add a DEF-File to your project,
+		which looks something like this:<br>
+		<br>
+
+<div class=cpp>
+<pre>
+LIBRARY MyPluginName
+EXPORTS
+    GetPluginFactory
+</pre>
+</div>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="Host_example">
+		<h2>Host example</h2>
+
+		<p>
+		The host application will handle your Plug-In something like this (some code is Windows-specific!):
+		</p>
+
+<div class=cpp>
+<pre>
+HMODULE hModule = LoadLibrary ("SomePlugin.dll");
+if(hModule)
+{
+	GetFactoryProc proc = (GetFactoryProc)GetProcAddress (hModule, "GetPluginFactory");
+
+	IPluginFactory* factory = proc ? proc () : 0;
+	if(factory)
+	{
+		for(long i = 0; i < factory->countClasses (); i++)
+		{
+			PClassInfo ci;
+			factory->getClassInfo (i, &ci);
+
+			FUnknown* obj;
+			factory->createInstance (ci.cid, FUnknown::iid, (void**)&obj);
+			...
+			obj->release ();
+		}
+
+		factory->release ();
+	}
+
+	FreeLibrary (hModule);
+}
+</pre>
+</div>
+		<br>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+
+		<hr noshade size=4>
+		<a name="IPluginFactory">
+		<h3>IPluginFactory</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="funknown.html">FUnknown</a> &lt;- IPluginFactory<br>
+			<b>Include File</b>:&nbsp; ipluginbase.h
+			</div>
+		</p>
+
+		<p>
+		This interface provides methods to get information about classes exported by a Plug-In Module,
+		and a mechanism to create instances of these classes.
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#IPluginFactory_getFactoryInfo">IPluginFactory::getFactoryInfo</a>
+			<li><a href="#IPluginFactory_countClasses">IPluginFactory::countClasses</a>
+			<li><a href="#IPluginFactory_getClassInfo">IPluginFactory::getClassInfo</a>
+			<li><a href="#IPluginFactory_createInstance">IPluginFactory::createInstance</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPluginFactory_getFactoryInfo">
+		<h4>IPluginFactory::getFactoryInfo</h4>
+		<div class=cpp>tresult PLUGIN_API <b>getFactoryInfo</b> (PFactoryInfo* info);</div>
+
+		<p>
+		Fill a <a href="#PFactoryInfo">PFactoryInfo</a> structure with information about the Plug-In vendor.
+		</p>
+
+		<p>
+			<b><u>PFactoryInfo Flags</u></b>:<br>
+			<br>
+			<table border=1 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+			<tr>
+				<td>kPluginClassesDiscardable</td>
+				<td>
+				The number of exported classes can change each time the Module is loaded.
+				If this flag is set, the host does not cache class information.
+				This leads to a longer startup time because the host always has to load the Module
+				to get the current class information.
+				</td>
+			</tr>
+			</table>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPluginFactory_countClasses">
+		<h4>IPluginFactory::countClasses</h4>
+		<div class=cpp>long PLUGIN_API <b>countClasses</b> ();</div>
+
+		<p>
+		Returns the number of exported classes.<br>
+		<br>
+		If you are using the <i>CPluginFactory</i> implementation provided by the SDK,
+		it returns the number of classes you registered with <i>CPluginFactory::registerClass</i>.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPluginFactory_getClassInfo">
+		<h4>IPluginFactory::getClassInfo</h4>
+		<div class=cpp>tresult PLUGIN_API <b>getClassInfo</b> (long index, PClassInfo* info)</div>
+
+		<p>
+		Fill a <a href="#PClassInfo">PClassInfo</a> structure with information about the class at the specified index.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPluginFactory_createInstance">
+		<h4>IPluginFactory::createInstance</h4>
+		<div class=cpp>tresult PLUGIN_API <b>createInstance</b> (const char* cid, const char* iid, void** obj);</div>
+
+		<p>
+		Create an new class instance.
+		</p>
+
+		<p>
+			<b><u>Parameters</u></b>:<br>
+			<br>
+			<table border=1 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+			<tr>
+				<td>cid</td>
+				<td>Class Identifier of the class instance to be created (see <a href="#PClassInfo">PClassInfo::cid</a>)</td>
+			</tr>
+			<tr>
+				<td>iid</td>
+				<td>Unique Identifier of the requested interface</td>
+			</tr>
+			<tr>
+				<td>obj</td>
+				<td>Variable which receives a pointer to the newly created object.</td>
+			</tr>
+			</table>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="IPluginBase">
+		<h3>IPluginBase</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="funknown.html">FUnknown</a> &lt;- IPluginBase<br>
+			<b>Include File</b>:&nbsp; ipluginbase.h
+			</div>
+		</p>
+
+		<p>
+		All exported Plug-In classes are derived from IPluginBase in some way. The interface provides two methods:
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#IPluginBase_initialize">IPluginBase::initialize</a>
+			<li><a href="#IPluginBase_terminate">IPluginBase::terminate</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPluginBase_initialize">
+		<h4>IPluginBase::initialize</h4>
+		<div class=cpp>tresult PLUGIN_API <b>initialize</b> (FUnknown* context)</b>;</div>
+
+		<p>
+		The Plug-In receives a context in which it will run. The context can always be queried for at
+		least the following interfaces:
+		<ul>
+			<li><a href="hostinterface.html#IHostApplication">IHostApplication</a>
+		</ul>
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		Extensive memory allocations etc. should be performed in this method rather than in the class constructor!<br>
+		If the method does NOT return <a href="datatypes.html#tresult">kResultOk</a>, the object is released immediately.
+		In this case <i>terminate</i> is not called!
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPluginBase_terminate">
+		<h4>IPluginBase::terminate</h4>
+		<div class=cpp>tresult PLUGIN_API <b>terminate</B> ()</div>
+
+		<p>
+		This method will be called immediately before the Plug-In is destroyed.
+		You have to release all references to any host application interfaces.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<br>
+		<hr noshade size=4>
+		<div align=center>
+		Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+		All Rights Reserved.
+		</div>
+		<div align="center"><font size="1">Last Modified:    
+		<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+		<br>
+		<!---------------------------------------------------------------------------------------------->
+	</td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

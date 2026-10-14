@@ -1,0 +1,160 @@
+<html>
+
+<head>
+	<title>Content</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="sdkdoc.css">
+</head>
+
+<script language="JavaScript" src="sdkdoc.js" type="text/javascript">
+</script>
+
+<body>
+<div>
+
+<div align=center>
+	<a href="front.html" target="content">
+		<img src="gfx/vstma_logo_mid.gif" border=0 alt="VST Module Architecture">
+	</a><br>
+</div>
+
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<!--- GENERAL ---------------------------------------------------------------------------------->
+<!---------------------------------------------------------------------------------------------->
+
+<table width=150 border=0 cellspacing=0 cellpadding=2>
+	<tr><th>
+		<img src="gfx/more_gray.gif">
+		<a href="#" onClick="popupGroup ('gen_all');"><b>1. General</b></a>
+	</th></tr>
+</table>
+
+<div id="gen_all" class=subgroup>
+<!---------------------------------------------------------------------------------------------->
+<a href="intro.html" onClick="popupGroup ('gen_intro');" target=content>Introduction</a><br>
+
+<div id="gen_intro" class=subgroup style="display:none;">
+	<a href="intro.html#1" target=content>VST Module Architecture</a><br>
+	<a href="intro.html#2" target=content>COM Compatibility</a>
+</div>
+<!---------------------------------------------------------------------------------------------->
+
+<!---------------------------------------------------------------------------------------------->
+<a href="funknown.html" onClick="popupGroup ('gen_funknown');" target=content>Basic Interface</a><br>
+<div id="gen_funknown" class=subgroup style="display:none;">
+	<a href="funknown.html#FUnknown" target=content>FUnknown</a><br>
+	<a href="funknown.html#HOWTO" target=content>HOWTO derive a class...</a>
+</div>
+<!---------------------------------------------------------------------------------------------->
+
+<!---------------------------------------------------------------------------------------------->
+<a href="datatypes.html" onClick="popupGroup ('gen_types');" target=content>Datatypes</a><br>
+<div id="gen_types" class=subgroup style="display:none;">
+	<a href="datatypes.html#tresult" target=content>Result Codes</a><br>
+	<a href="datatypes.html#FUID" target=content>FUID</a><br>
+	<a href="datatypes.html#ViewRect" target=content>ViewRect</a>
+</div>
+<!---------------------------------------------------------------------------------------------->
+
+<!---------------------------------------------------------------------------------------------->
+<a href="pluginbase.html" onClick="popupGroup ('gen_base');" target=content>Plug-In Basics</a><br>
+<div id="gen_base" class=subgroup style="display:none;">
+	<a href="pluginbase.html#GetPluginFactory" target=content>GetPluginFactory</a><br>
+	<a href="pluginbase.html#DEF" target=content>Exporting GetPluginFactory</a><br>
+	<a href="pluginbase.html#Host_example" target=content>Host example</a><br>
+	<a href="pluginbase.html#IPluginFactory" target=content>IPluginFactory</a><br>
+	<a href="pluginbase.html#IPluginBase" target=content>IPluginBase</a><br>
+</div>
+<!---------------------------------------------------------------------------------------------->
+
+<!---------------------------------------------------------------------------------------------->
+<a href="plugui.html" onClick="popupGroup ('gen_plugui');" target=content>Plug-In GUI</a><br>
+<div id="gen_plugui" class=subgroup style="display:none;">
+	<a href="plugui.html#Using_XML" target=content>Plug-In GUI using XML</a><br>
+	<a href="plugui.html#VSTGUI" target=content>Plug-In GUI using VSTGUI</a><br>
+	<a href="plugui.html#IUIFactory" target=content>IUIFactory</a><br>
+	<a href="plugui.html#IUIFactory2" target=content>IUIFactory2</a><br>
+	<a href="plugui.html#IViewFactory" target=content>IViewFactory</a><br>
+	<a href="plugui.html#IPlugView" target=content>IPlugView</a><br>
+	<a href="plugui.html#IEditorFactory" target=content>IEditorFactory</a><br>
+</div>
+<!---------------------------------------------------------------------------------------------->
+
+<!---------------------------------------------------------------------------------------------->
+<a href="parameter.html" onClick="popupGroup ('gen_param');" target=content>Plug-In Parameter</a><br>
+<div id="gen_param" class=subgroup style="display:none;">
+	<a href="parameter.html#IPlugController" target=content>IPlugController</a><br>
+	<a href="parameter.html#IGenericPlugController" target=content>IGenericPlugController</a><br>
+	<a href="parameter.html#IParameter" target=content>IParameter</a><br>
+</div>
+<!---------------------------------------------------------------------------------------------->
+
+<!---------------------------------------------------------------------------------------------->
+<a href="plugstorage.html" onClick="popupGroup ('gen_storage');" target=content>Plug-In Storage</a><br>
+<div id="gen_storage" class=subgroup style="display:none;">
+	<a href="plugstorage.html#Chunks_or_Params" target=content>Chunks or Parameters?</a><br>
+	<a href="plugstorage.html#IPersistentChunk" target=content>IPersistentChunk</a><br>
+</div>
+<!---------------------------------------------------------------------------------------------->
+
+<!---------------------------------------------------------------------------------------------->
+<a href="hostinterface.html" onClick="popupGroup ('gen_host');" target=content>Host Interface</a><br>
+<div id="gen_host" class=subgroup style="display:none;">
+	<a href="hostinterface.html#IHostApplication" target=content>IHostApplication</a><br>
+</div>
+<!---------------------------------------------------------------------------------------------->
+
+<!---------------------------------------------------------------------------------------------->
+<a href="commoncpp.html" onClick="popupGroup ('gen_cppclasses');" target=content>Common SDK Classes</a><br>
+<div id="gen_cppclasses" class=subgroup style="display:none;">
+	<a href="commoncpp.html#CPluginFactory" target=content>CPluginFactory</a><br>
+	<a href="commoncpp.html#CPlugParams" target=content>CPlugParams</a><br>
+	<a href="commoncpp.html#CParameter" target=content>CParameter</a><br>
+</div>
+<!---------------------------------------------------------------------------------------------->
+
+<!---------------------------------------------------------------------------------------------->
+<a href="install.html" target=content>Installing Plug-Ins</a><br>
+<!---------------------------------------------------------------------------------------------->
+
+<br>
+</div>
+
+<!---------------------------------------------------------------------------------------------->
+<!--- MIDI Effects ----------------------------------------------------------------------------->
+<!---------------------------------------------------------------------------------------------->
+
+<table width=150 border=0 cellspacing=0 cellpadding=2>
+	<tr><th>
+		<img src="gfx/more_gray.gif">
+		<a href="#" onClick="popupGroup ('midi');"><b>2. MIDI Effects</b></a>
+	</th></tr>
+</table>
+
+<!---------------------------------------------------------------------------------------------->
+<div id="midi" class=subgroup style="display:;">
+	<a href="midi/meintro.html" target=content>Introduction</a><br>
+	<a href="midi/megraph.html" target=content>Interface Overview</a><br>
+	<a href="midi/mestart.html" target=content>Getting started</a><br>
+	<a href="midi/metypes.html" target=content>Datatypes</a><br>
+	<a href="midi/midieffect.html" target=content>IMidiEffect</a><br>
+	<a href="midi/meaccessor.html" target=content>IMEAccessor</a><br>
+	<a href="midi/meaccessor.html#IMEAccessor2" target=content>IMEAccessor2</a><br>
+	<a href="midi/meinterfaces.html#IMasterTrackInfo" target=content>IMasterTrackInfo</a><br>
+	<a href="midi/meinterfaces.html#ITransportInfo" target=content>ITransportInfo</a><br>
+	<a href="midi/midicpp.html#CMidiEffect" target=content>CMidiEffect</a><br>
+	<a href="midi/midicpp.html#CMidiEventQueue" target=content>CMidiEventQueue</a><br>
+	<br>
+	<a href="midi/licensing.html" target=content>Licensing Issues</a><br>
+</div>
+<!---------------------------------------------------------------------------------------------->
+
+<br>
+<br>
+
+</div>
+</body>
+</html>

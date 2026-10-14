@@ -1,0 +1,91 @@
+<html>
+
+<head>
+	<title>Introduction</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="sdkdoc.css">
+</head>
+
+<body>
+<div>
+
+<table border=0 width=600>
+<tr>
+	<td>
+		<h1>Introduction</h1>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="1">
+		<h2>VST Module Architecture</h2>
+		<p>
+		The <i>VST Module Architecture</i> described in this document is an object-oriented,
+		cross-platform and compiler-independent* interface model.
+		It specifies what components must "look like" and how they are created by the host application.<br>
+		<br>
+		We can separate the specification into 3 layers:
+		<ol>
+			<li>
+				<u>Interface convention</u>:<br>
+				<br>
+				Everything visible for both the host and the Plug-In is "wrapped" into interfaces.
+				An interface in C++ is a class with virtual methods only. The basic interface is <a href="funknown.html">FUnknown</a>.
+				All other interfaces are directly or indirectly derived from it.<br>
+				<br>
+			</li>
+
+			<li>
+				<u>Module Export Interface</u>:<br>
+				<br>
+				A module (Windows: Dynamic Link Library, MAC: Mach-O Bundle) contains the implementation of
+				one or more Plug-In classes (e.g. MIDI Effects).
+				The only symbol searched for is <a href="pluginbase.html#GetPluginFactory">GetPluginFactory</a>, a C-style function
+				to create the <a href="pluginbase.html#IPluginFactory">factory object</a> of the module.<br>
+				<br>
+			</li>
+
+			<li>
+				<u>Purpose-specific interfaces</u>:<br>
+				<br>
+				Each Plug-In category (MIDI Effects, etc...) defines its own set of purpose-specific
+				interfaces. Additionally, some basic interfaces are shared across all categories.
+			</li>
+		</ol>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="2">
+		<h2>COM Compatibility</h2>
+		<p>
+		The first layer of <i>VST Module Architecture</i> is binary compatible to Microsoft&reg; COM
+		(Component Object Model). The Vtable and Interface Identifier of <a href="funknown.html">FUnknown</a> match
+		with the corresponding COM interface IUnknown.
+		The main difference is the organization and creation of components by a host application.
+		<i>VST Module Architecture</i> does not require any Microsoft&reg; COM source file.
+		It is currently available for Windows and Mac OS X.
+		</p>
+
+		<br>
+		<br>
+
+		* Source code is provided in C++ only!
+		<!---------------------------------------------------------------------------------------------->
+		<br>
+		<hr noshade size=4>
+		<div align=center>
+		Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+		All Rights Reserved.
+		</div>
+		<div align="center"><font size="1">Last Modified:    
+		<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+		<br>
+		<!---------------------------------------------------------------------------------------------->
+	</td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

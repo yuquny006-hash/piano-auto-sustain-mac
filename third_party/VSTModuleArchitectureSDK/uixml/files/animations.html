@@ -1,0 +1,172 @@
+<html>
+
+<head>
+	<title>Animations</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="uixml.css">
+</head>
+
+<body bgcolor=white text=black>
+
+<h2>Animations</h2>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Animation resource</h3>
+
+<div class="xmltag">
+<big>
+&lt;<font color=blue><b>animation</b></font>
+<font color=red><b>name</b></font>="..."
+<font color=red><b>bitmap</b></font>="..."
+<font color=green><b>mode</b></font>="..."/&gt;
+</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>name</td>
+<td>
+	animation name, to be used in <font color=green>onMouseover</font>, <font color=green>onMousedown</font>...
+</td>
+</tr>
+<tr>
+<td valign=top>bitmap</td>
+<td>
+	referes to a &lt;filmstrip&gt; in resources section which contains the animation film strip.<br>
+	<img src="gfx/more.gif"> <a href="resources.html#filmstrip">Filmstrip</a>
+</td>
+</tr>
+<tr>
+<td valign=top>mode</td>
+<td>
+	can be "<font color=blue>repeat</font>" or "<font color=blue>once</font>"*<br>
+	<br>
+	<u>Additional flags</u>:<br>
+	<table border=0 cellspacing=0 cellpadding=2>
+	<tr><td><font color=blue>forward</font></td><td>- play filmstrip forward</td></tr>
+	<tr><td><font color=blue>backward</font></td><td>- play filmstrip backward</td></tr>
+	<tr><td><font color=blue>interrupt</font></td><td>- interrupt animation immediately if event is over</td></tr>
+	</table>
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="switches">
+<!---------------------------------------------------------------------------------------------->
+
+<h3>HOWTO animate switches</h3>
+To animate a switch, you have to specify an animation name in one of the event handlers.<br>
+
+<br>
+<br>
+
+<table border=1 cellspacing=0 cellpadding=4 bordercolor=black>
+<tr>
+	<th width=100 bgcolor=#989898>Event</th>
+	<th width=200 bgcolor=#989898>Trigger</th>
+</tr>
+<tr>
+	<td><big><font color=green><b>onMouseover</b></font></big></td>
+	<td>mouse enters the control</td>
+</tr>
+<tr>
+	<td><big><font color=green><b>onMouseout</b></font></big></td>
+	<td>mouse leaves the control</td>
+</tr>
+<tr>
+	<td><big><font color=green><b>onMousedown</b></font></big></td>
+	<td>mouse clicks the control</td>
+</tr>
+<tr>
+	<td><big><font color=green><b>onMouseup</b></font></big></td>
+	<td>mouse released after click</td>
+</tr>
+<tr>
+	<td><big><font color=green><b>onSwitchon</b></font></big></td>
+	<td>switch turned to ON state</td>
+</tr>
+<tr>
+	<td><big><font color=green><b>onSwitchoff</b></font></big></td>
+	<td>switch turned to OFF state</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<table border=1 cellspacing=0 cellpadding=4 bordercolor=black>
+<tr>
+	<th width=100 bgcolor=#989898>Animation</th>
+	<th width=200 bgcolor=#989898>Notes</th>
+</tr>
+<tr>
+	<td>blend</td>
+	<td>
+		Fades the control bitmap in and<br>out with a period of 20ms.
+	</td>
+</tr>
+<tr>
+	<td>rotate</td>
+	<td>
+		Rotates the control bitmap<br>clockwise one time around.
+	</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<b>Example</b>:<br>
+<br>
+<div class="xmltag">
+<br>
+&lt;resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;filmstrip name="anim1" path="bitmaps\anim1.bmp" framecount="10"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;animation name="animation1" bitmap="anim1" /&gt;<br>
+&lt;/resources&gt;<br>
+<br>
+&lt;template ...&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;switch ... style="push"
+	<font color=green>onMouseover</font>="blend" <font color=green>onMousedown</font>="animation1"/&gt;<br>
+&lt;/template&gt;<br>
+<br>
+</div>
+
+<br>
+<br>
+
+<img src="gfx/more.gif"> <a href="controls.html#buttons">Button/Switch</a><br>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<br>
+<div align=center>
+Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+All Rights Reserved.
+</div>
+<div align="center"><font size="1">Last Modified:    
+<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+<br>
+<!---------------------------------------------------------------------------------------------->
+
+</body>
+
+</html>

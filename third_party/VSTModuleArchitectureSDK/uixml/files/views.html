@@ -1,0 +1,110 @@
+<html>
+
+<head>
+	<title>Views</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="uixml.css">
+</head>
+
+<body bgcolor=white text=black>
+
+<h2>Views</h2>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="about"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>What are views</h3>
+
+A view defines a visible area on the screen. It is the basic unit of user interaction.
+A view is responsible for drawing the users data and for handling of user input.<br>
+<br>
+<b>Note that all control tags inherit the attributes of the view tag.</b><br>
+&lt;view&gt; is just a "placeholder" for complex views, created by the application itself.<br>
+
+<br>
+<br>
+
+<div class="xmltag">
+<big>
+&lt;<font color=blue><b>view</b></font> <font color=red><b>name</b></font>="..."
+<font color=green><b>title</b></font>="..."
+<font color=green><b>size</b></font>="left,top,width,height"
+<font color=green><b>attach</b></font>="..."
+<font color=green><b>tip</b></font>="..."
+<font color=green><b>cursor</b></font>="..."/&gt;
+</big>
+</div><br>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>name</td>
+<td>
+	application-specific view name<br>
+	It is the connection between user interface and program functions
+	e.g. "Player:play", "Player:stop",...
+</td>
+</tr>
+<tr>
+<td valign=top>title</td>
+<td>
+	view title, visible to the user
+</td>
+</tr>
+<tr>
+<td valign=top>size</td>
+<td>
+	upper-left position relative to parent view and width &amp; height<br>
+	If no size is specified, some controls (e.g. buttons) use their default size specified in scheme section,
+	otherwise the view is resized to its content.
+</td>
+</tr>
+<tr>
+<td valign=top>attach</td>
+<td>
+	Autosizing flags, can be "<font color=blue>all</font>" or a combination of "<font color=blue>left</font>", "<font color=blue>top</font>", "<font color=blue>right</font>", "<font color=blue>bottom</font>" separated with pipes<br>
+	e.g. "left|top", "left|top|right|bottom" (= "all"),...
+</td>
+</tr>
+<tr>
+<td valign=top>tip</td>
+<td>
+	tooltip
+</td>
+</tr>
+<tr>
+<td valign=top>cursor</td>
+<td>
+	specific or standard cursor<br>
+	<img src="gfx/more.gif"> <a href="resources.html#cursors" target=content>HOWTO include cursors</a><br>
+	<img src="gfx/more.gif"> <a href="scheme.html#cursors" target=content>Standard cursors</a>
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<br>
+<div align=center>
+Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+All Rights Reserved.
+</div>
+<div align="center"><font size="1">Last Modified:    
+<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+<br>
+<!---------------------------------------------------------------------------------------------->
+
+</body>
+
+</html>

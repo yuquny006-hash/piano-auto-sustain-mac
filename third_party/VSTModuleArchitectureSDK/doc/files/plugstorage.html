@@ -1,0 +1,133 @@
+<html>
+
+<head>
+	<title>Plug-In Storage</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="sdkdoc.css">
+</head>
+
+<body>
+<div>
+
+<table border=0 width=600>
+<tr>
+	<td>
+		<h1>Plug-In Storage</h1>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="Chunks_or_Params">
+		<h2>Chunks or Parameters?</h2>
+
+		<p>
+		There are two ways to store the current state of a Plug-In: either trough the <a href="parameter.html">parameter interfaces</a>
+		or as an opaque memory block (chunk). The host first queries the Plug-In for <a href="#IPersistentChunk">IPersistentChunk</a>
+		interface. If it is not implemented, the values of all parameters are saved.<br>
+		<br>
+		Chunk storage allows to save additional data (besides the parameter state) which is specific to the Plug-In.
+		Please note, that if you decide to use chunk storage, you have to take care of saving and loading parameter states
+		on your own!
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="IPersistentChunk">
+		<h3>IPersistentChunk</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="funknown.html">FUnknown</a> &lt;- IPersistentChunk<br>
+			<b>Include File</b>:&nbsp; iplugstorage.h
+			</div>
+		</p>
+
+		<p>
+		<i>IPersistentChunk</i> is used to store the current Plug-In state to a memory
+		block which the host application then can transfer to a persistent storage.
+		This is used for storing Plug-In presets.
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#IPersistentChunk_getUID">IPersistentChunk::getUID</a>
+			<li><a href="#IPersistentChunk_setChunk">IPersistentChunk::setChunk</a>
+			<li><a href="#IPersistentChunk_getChunk">IPersistentChunk::getChunk</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPersistentChunk_getUID">
+		<h4>IPersistentChunk::getUID</h4>
+		<div class=cpp>tresult PLUGIN_API <b>getUID</b> (char* uid)</div>
+
+		<p>
+		Copies a 16 Byte Globally Unique Identifier to <i>uid</i>. The UID is used to associate a stored
+		memory block with the Plug-In.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPersistentChunk_setChunk">
+		<h4>IPersistentChunk::setChunk</h4>
+		<div class=cpp>tresult PLUGIN_API <b>setChunk</b> (char* chunk, long size)</div>
+
+		<p>
+		Called by the host application to restore the Plug-In state from a preset.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPersistentChunk_getChunk">
+		<h4>IPersistentChunk::getChunk</h4>
+		<div class=cpp>tresult PLUGIN_API <b>getChunk</b> (char* chunk, long* size)</div>
+
+		<p>
+		Called by the host application to create a preset from the current Plug-In state.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		This method is called twice! At first the <i>chunk</i> parameter is NULL, on return <i>size</i>
+		has to be set to the maximum size required for storing the Plug-In state. The host then can allocate
+		the required memory amount and calls <i>IPersistentChunk::getChunk</i> again to actually save the
+		state to <i>chunk</i> (see following host example).<br>
+		<br>
+
+<div class=cpp>
+<pre>
+IPersistentChunk* plug; // a valid Plug-In reference
+
+long size;
+if(plug->getChunk (0, &size) == kResultOk && size > 0)
+{
+	char* chunk = new char[size];
+	plug->getChunk (chunk, &size);
+	...
+	delete [] chunk;
+}
+</pre>
+</div>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<br>
+		<hr noshade size=4>
+		<div align=center>
+		Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+		All Rights Reserved.
+		</div>
+		<div align="center"><font size="1">Last Modified:    
+		<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+		<br>
+		<!---------------------------------------------------------------------------------------------->
+	</td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

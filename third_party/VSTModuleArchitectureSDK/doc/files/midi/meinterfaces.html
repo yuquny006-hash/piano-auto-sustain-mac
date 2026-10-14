@@ -1,0 +1,249 @@
+<html>
+
+<head>
+	<title>MIDI Effect Host Interfaces</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="../sdkdoc.css">
+</head>
+
+<body>
+<div>
+
+<table border=0 width=600>
+<tr>
+	<td>
+		<h1>MIDI Effect Host Interfaces</h1>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="IMasterTrackInfo">
+		<h3>IMasterTrackInfo</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="../funknown.html">FUnknown</a> &lt;- IMasterTrackInfo<br>
+			<b>Include File</b>:&nbsp; imidieffect.h
+			</div>
+		</p>
+
+		<p>
+		You can query the <i>context</i> variable passed on by
+		<a href="../pluginbase.html#IPluginBase_initialize">IPluginBase::initialize</a> for a
+		reference to this interface.
+		</p>
+
+		<p>
+		<b><u>PPQ conversion</u>:</b><br>
+		<ul>
+			<li><a href="#IMasterTrackInfo_getPpqBase">IMasterTrackInfo::getPpqBase</a>
+			<li><a href="#IMasterTrackInfo_seconds2ppq">IMasterTrackInfo::seconds2ppq</a>
+			<li><a href="#IMasterTrackInfo_ppq2seconds">IMasterTrackInfo::ppq2seconds</a>
+		</ul>
+		</p>
+
+		<p>
+		<b><u>Tempo events</u>:</b><br>
+		<ul>
+			<li><a href="#IMasterTrackInfo_countTempoEvents">IMasterTrackInfo::countTempoEvents</a>
+			<li><a href="#IMasterTrackInfo_getTempo">IMasterTrackInfo::getTempo</a>
+			<li><a href="#IMasterTrackInfo_getTempoIndex">IMasterTrackInfo::getTempoIndex</a>
+		</ul>
+		</p>
+
+		<p>
+		<b><u>Bar information</u>:</b><br>
+		<ul>
+			<li><a href="#IMasterTrackInfo_getBar">IMasterTrackInfo::getBar</a>
+			<li><a href="#IMasterTrackInfo_getBarPosition">IMasterTrackInfo::getBarPosition</a>
+		</ul>
+		</p>
+
+		<p>
+		<b><u>Signature events</u>:</b><br>
+		<ul>
+			<li><a href="#IMasterTrackInfo_countSignatureEvents">IMasterTrackInfo::countSignatureEvents</a>
+			<li><a href="#IMasterTrackInfo_getSignature">IMasterTrackInfo::getSignature</a>
+			<li><a href="#IMasterTrackInfo_getSignatureIndex">IMasterTrackInfo::getSignatureIndex</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMasterTrackInfo_getPpqBase">
+		<h4>IMasterTrackInfo::getPpqBase</h4>
+		<div class=cpp>long	PLUGIN_API <b>getPpqBase</b> ()</div>
+
+		<p>
+		Returns the PPQ base of the host application.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMasterTrackInfo_seconds2ppq">
+		<h4>IMasterTrackInfo::seconds2ppq</h4>
+		<div class=cpp>long	PLUGIN_API <b>seconds2ppq</b> (long seconds)</div>
+
+		<p>
+		Converts from milliseconds to PPQ.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMasterTrackInfo_ppq2seconds">
+		<h4>IMasterTrackInfo::ppq2seconds</h4>
+		<div class=cpp>long	PLUGIN_API <b>ppq2seconds</b> (long ppq)</div>
+
+		<p>
+		Converts from PPQ to milliseconds.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMasterTrackInfo_countTempoEvents">
+		<h4>IMasterTrackInfo::countTempoEvents</h4>
+		<div class=cpp>long	PLUGIN_API <b>countTempoEvents</b> ()</div>
+
+		<p>
+		Counts the number of tempo changes in the current host arrangement.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMasterTrackInfo_getTempo">
+		<h4>IMasterTrackInfo::getTempo</h4>
+		<div class=cpp>tresult PLUGIN_API <b>getTempo</b> (long index, long* ppq, long* bpm)</div>
+
+		<p>
+		Gets tempo change at the specified index. On return, <i>ppq</i> is set to the PPQ position
+		of the tempo change, <i>bpm</i> is the tempo in BPM times 1000 (e.g. 120000 equals 120.000 BPM).
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMasterTrackInfo_getTempoIndex">
+		<h4>IMasterTrackInfo::getTempoIndex</h4>
+		<div class=cpp>long	PLUGIN_API <b>getTempoIndex</b> (long ppq)</div>
+
+		<p>
+		Gets an index for the tempo change table at the specified PPQ position.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMasterTrackInfo_getBar">
+		<h4>IMasterTrackInfo::getBar</h4>
+<div class=cpp>
+<pre>
+tresult PLUGIN_API <b>getBar</b> (
+		long ppq,
+		long* barCount,
+		long* beatCount,
+		long* remainder)
+</pre>
+</div>
+
+		<p>
+		Gets bar information at the specified PPQ position.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMasterTrackInfo_getBarPosition">
+		<h4>IMasterTrackInfo::getBarPosition</h4>
+		<div class=cpp>long	PLUGIN_API <b>getBarPosition</b> (long barCount, long beatCount, long remainder)</div>
+
+		<p>
+		Gets PPQ position from bar information.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMasterTrackInfo_countSignatureEvents">
+		<h4>IMasterTrackInfo::countSignatureEvents</h4>
+		<div class=cpp>long	PLUGIN_API <b>countSignatureEvents</b> ()</div>
+
+		<p>
+		Returns the number of signature events in the current host arrangement.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMasterTrackInfo_getSignature">
+		<h4>IMasterTrackInfo::getSignature</h4>
+<div class=cpp>
+<pre>
+tresult	PLUGIN_API <b>getSignature</b> (
+		long index,
+		long* numerator,
+		long* denominator)
+</pre>
+</div>
+
+		<p>
+		Gets signature information at the specified signature table index.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMasterTrackInfo_getSignatureIndex">
+		<h4>IMasterTrackInfo::getSignatureIndex</h4>
+		<div class=cpp>long	PLUGIN_API <b>getSignatureIndex</b> (long ppq)</div>
+
+		<p>
+		Gets a signature table index for the specified PPQ position.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="ITransportInfo">
+		<h3>ITransportInfo</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="../funknown.html">FUnknown</a> &lt;- ITransportInfo<br>
+			<b>Include File</b>:&nbsp; imidieffect.h
+			</div>
+		</p>
+
+		<p>
+		You can query the <i>context</i> variable passed on by
+		<a href="../pluginbase.html#IPluginBase_initialize">IPluginBase::initialize</a> for a
+		reference to this interface.
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#ITransportInfo_getSystemTimePpq">ITransportInfo::getSystemTimePpq</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="ITransportInfo_getSystemTimePpq">
+		<h4>ITransportInfo::getSystemTimePpq</h4>
+		<div class=cpp>long PLUGIN_API <b>getSystemTimePpq</b> ()</div>
+
+		<p>
+		Returns the current system time of the host sequencer in PPQ.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<br>
+		<hr noshade size=4>
+		<div align=center>
+		Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+		All Rights Reserved.
+		</div>
+		<div align="center"><font size="1">Last Modified:    
+		<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+		<br>
+		<!---------------------------------------------------------------------------------------------->
+	</td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

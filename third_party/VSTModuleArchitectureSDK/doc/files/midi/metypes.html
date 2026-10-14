@@ -1,0 +1,214 @@
+<html>
+
+<head>
+	<title>MIDI API Datatypes</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan, Werner Kracht">
+	<link rel="stylesheet" type="text/css" href="../sdkdoc.css">
+</head>
+
+<body>
+<div>
+
+<table border=0 width=600>
+<tr>
+	<td>
+		<h1>MIDI API Datatypes</h1>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="MidiStatus">
+		<h3>MidiStatus</h3>
+		<p>
+			<div class=include>
+			<b>Include File</b>:&nbsp; imidieffect.h
+			</div>
+		</p>
+
+<div class=cpp>
+<pre>
+enum <b>MidiStatus</b>
+{
+	kNoteOff = 0x80,
+	kNoteOn = 0x90,
+	kPolyPressure = 0xA0,
+	kController = 0xB0,
+	kProgramChange = 0xC0,
+	kAfterTouch = 0xD0,
+	kPitchBend = 0xE0,
+
+	kSysexStart = 0xF0,
+	kQuarterFrame = 0xF1,
+	kSongPointer = 0xF2,
+	kSongSelect = 0xF3,
+	kCableSelect = 0xF5,
+	kSysexEnd = 0xF7,
+	kMidiClock = 0xF8,
+	kMidiClockStart = 0xFA,
+	kMidiClockContinue = 0xFB,
+	kMidiClockStop = 0xFC,
+	kActiveSensing = 0xFE,
+	kMidiReset = 0xFF
+};
+</pre>
+</div>
+		<p>
+		Declaration of supported MIDI status types according to the MIDI Standard Specification.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="MidiEffectCaps">
+		<h3>MidiEffectCaps</h3>
+		<p>
+			<div class=include>
+			<b>Include File</b>:&nbsp; imidieffect.h
+			</div>
+		</p>
+
+<div class=cpp>
+<pre>
+struct <b>MidiEffectCaps</b>
+{
+	size_t structSize;	// sizeof(MidiEffectCaps), set by host
+	long flags;	// see <a href="midieffect.html#IMidiEffect_getCaps">IMidiEffect::getCaps</a>
+};
+</pre>
+</div>
+
+		<p>
+		This structure specifies the capabilities of a MIDI effect when the host calls
+		<a href="midieffect.html#IMidiEffect_getCaps">IMidiEffect::getCaps</a>.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="MidiContextInfo">
+		<h3>MidiContextInfo</h3>
+		<p>
+			<div class=include>
+			<b>Include File</b>:&nbsp; imidieffect.h
+			</div>
+		</p>
+
+<div class=cpp>
+<pre>
+struct <b>MidiContextInfo</b>
+{
+	long tempo;
+	long ppqPosition;
+	long stopPosition;
+
+	long performedCyclesPpq;
+	long performedCyclesImmediatePpq;
+	long numberOfPerformedCycles;
+
+	long barPos;
+	long barCount;
+	long beatCount;
+	long remainder;
+
+	short numerator;
+	short denominator;
+};
+</pre>
+</div>
+
+		<p>
+		Structure with metrical information at a certain PPQ position in the current host arrangement.
+		To fill this structure, you have to call
+		<a href="meaccessor.html#IMEAccessor_getContextInfo">IMEAccessor::getContextInfo</a>.
+		</p>
+
+		<p>
+		<table border=1 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<th>Member</th>
+			<th>Description</th>
+		</tr>
+		<tr>
+			<td>tempo</td>
+			<td>Tempo in BPM times 1000 (e.g. 120000 equals 120.000 BPM)</td>
+		</tr>
+		<tr>
+			<td>ppqPosition</td>
+			<td>
+			Current PPQ-based play position of the Plug-In. As the Plug-In normally
+			plays ahead of time, it is not the current play position in a project!
+			</td>
+		</tr>
+		<tr>
+			<td>stopPosition</td>
+			<td>
+			In case of playback in Stop Mode this is the anchor start position.<br>
+			All following calls to <a href="midieffect.html#IMidiEffect_playAction">IMidiEffect::playAction</a>
+			with "immediate" set to true will be based on this position as the starting point.
+			</td>
+		</tr>
+		<tr>
+			<td>performedCyclesPpq</td>
+			<td>
+			(see performedCyclesImmediatePpq)
+			</td>
+		</tr>
+		<tr>
+			<td>performedCyclesImmediatePpq</td>
+			<td>
+			Convenience counter for sum of ellapsed cycles in PPQ-base.<br>
+			(As Cubase SX is currently not able to change cycle-ranges "on the fly"
+			it is less important at the moment.)
+			</td>
+		</tr>
+		<tr>
+			<td>numberOfPerformedCycles</td>
+			<td>Convenience - if swapAction method is not overwritten to perform this count.</td>
+		</tr>
+		<tr>
+			<td>barPos</td>
+			<td>
+			PPQ-based start position of current bar.<br>
+			(Example: ppq of 961 will result in a barPos value of 0 for a 4/4 time signature,
+			but in a value of 960 for 2/4 time signature).
+			</td>
+		</tr>
+		<tr>
+			<td>barCount</td>
+			<td>zero-based bar number at PPQ-position</td>
+		</tr>
+		<tr>
+			<td>beatCount</td>
+			<td>zero-based beat number at PPQ-position</td>
+		</tr>
+		<tr>
+			<td>remainder</td>
+			<td>remaining ticks (bar.beat.ticks)</td>
+		</tr>
+		<tr>
+			<td>numerator</td>
+			<td>numerator of time signature at PPQ-position</td>
+		</tr>
+		<tr>
+			<td>denominator</td>
+			<td>denominator of time signature at PPQ-position</td>
+		</tr>
+		</table>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<br>
+		<hr noshade size=4>
+		<div align=center>
+		Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+		All Rights Reserved.
+		</div>
+		<div align="center"><font size="1">Last Modified:    
+		<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+		<br>
+		<!---------------------------------------------------------------------------------------------->
+	</td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

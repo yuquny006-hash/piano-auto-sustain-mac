@@ -1,0 +1,133 @@
+<html>
+
+<head>
+	<title>MIDI Effect Introduction</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan, Werner Kracht">
+	<link rel="stylesheet" type="text/css" href="../sdkdoc.css">
+</head>
+
+<body>
+<div>
+
+<table border=0 width=600>
+<tr>
+	<td>
+		<h1>Steinberg MIDI Effect API</h1>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+
+		<p>
+		This section describes the <i>Steinberg MIDI Effect API</i>, introduced with Cubase SX.
+		A MIDI effect can be used as an insert effect or a send effect on a MIDI track, to transform and generate
+		MIDI data in realtime. Typical MIDI effects are Arpeggiator, Echo, etc.
+		</p>
+
+		<p>
+		The <i>Steinberg MIDI Effect API</i> is completely based on the <a href="../intro.html">VST Module Architecture</a>,
+		described earlier.
+		All special interfaces used for MIDI effects can be found in imidieffect.h.<br>
+		</p>
+
+		<p>
+		<b><u>Plug-In side</u></b>:<br>
+		<br>
+		<table border=1 width=600 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<td width=110><a href="midieffect.html">IMidiEffect</a></td>
+			<td>The MIDI effect</td>
+		</tr>
+		<tr>
+			<td><a href="../parameter.html#IGenericPlugController">IGenericPlugController</a></td>
+			<td>Parameter interface</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="../plugui.html#IUIFactory">IUIFactory</a><br>
+			</td>
+			<td>MIDI effect editor (optional)</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="../plugstorage.html#IPersistentChunk">IPersistentChunk</a><br>
+			</td>
+			<td>Preset storage (optional)</td>
+		</tr>
+		</table>
+
+		<br>
+		The SDK provides a class <a href="midicpp.html#CMidiEffect">CMidiEffect</a> which already implements all required interfaces.
+		You should derive your MIDI effect from this helper class.<br>
+		<br>
+
+		<b><u>Host side</u></b>:<br>
+		<br>
+		<table border=1 width=600 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+		<tr>
+			<td width=110>
+				<a href="meaccessor.html#IMEAccessor">IMEAccessor</a>
+			</td>
+			<td>
+				Create and manipulate MIDI events, get context information
+			</td>
+		</tr>
+		<tr>
+			<td width=110>
+				<a href="meinterfaces.html#IMasterTrackInfo">IMasterTrackInfo</a><br>
+				<a href="meinterfaces.html#ITransportInfo">ITransportInfo</a>
+			</td>
+			<td>
+				Get detailed context information (tempo changes, time signature, ...)
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<a href="../hostinterface.html#IHostApplication">IHostApplication</a><br>
+			</td>
+			<td>Standard host interface</td>
+		</tr>
+		</table>
+		</p>
+
+		<p>
+		<img src="../gfx/more.gif"> <a href="megraph.html" target=content>Interface Overview</a>
+		</p>
+
+		<p>
+		The MIDI effects work directly on the MIDI data structure of the host application. From the effects's
+		point of view, MIDI events are of type <i>IMEObjectID</i>, which in C++ simply is a void pointer.
+		To create or manipulate an event, you have to pass this "event handle" to the acccess methods of
+		<a href="meaccessor.html">IMEAccessor</a>.<br>
+		<br>
+		A general rule for the lifetime of a MIDI event is that you have to destroy events yourself, if they were
+		created by yourself
+		(see <a href="meaccessor.html#IMEAccessor_destroyEvent">IMEAccessor::destroyEvent</a>).
+		</p>
+
+		<p>
+		All timestamps are expressed in PPQ (ticks per quarter note), which ensures that events created by a
+		MIDI effect are always "in time". The timebase is currently 480 PPQ, it can be obtained via
+		<a href="meinterfaces.html#IMasterTrackInfo_getPpqBase">IMasterTrackInfo::getPpqBase</a>.
+		To convert timestamps e.g. from PPQ to seconds, you can use
+		<a href="meinterfaces.html#IMasterTrackInfo_ppq2seconds">IMasterTrackInfo::ppq2seconds</a>.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<br>
+		<hr noshade size=4>
+		<div align=center>
+		Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+		All Rights Reserved.
+		</div>
+		<div align="center"><font size="1">Last Modified:
+		<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+		<br>
+		<!---------------------------------------------------------------------------------------------->
+	</td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

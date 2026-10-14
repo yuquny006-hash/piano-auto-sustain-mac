@@ -1,0 +1,184 @@
+<html>
+
+<head>
+	<title>Window Shapes</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Maik Oppermann">
+	<link rel="stylesheet" type="text/css" href="uixml.css">
+</head>
+
+<body bgcolor=white text=black>
+
+<h2>Window Shapes</h2>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Shape resource</h3>
+
+<div class="xmltag">
+<big>
+
+&lt;<font color=blue><b>shape</b></font>
+<font color=red><b>name</b></font>="..."&gt;
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;<font color=blue><b>area</b></font>
+<font color=red><b>bitmap</b></font>="..."
+<font color=green><b>attach</b></font>="..."
+<font color=green><b>offset</b></font>="..."/&gt;
+
+<br>&lt;/<font color=blue><b>shape</b></font>&gt;
+
+</big><br>
+</div>
+
+<br>
+<br>
+
+Defines a complex window shape for resizable windows.<br>
+A shape consists of multiple areas that can be attached to the window edges.
+
+<br>
+<br>
+
+<u>Attributes</u>: (for &lt;area&gt; tag)<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>bitmap</td>
+<td>
+	referes to a bitmap in resources section<br>
+	the bitmap must have a transpareny color (mask="#color" in <img src="gfx/more.gif"> <a href="resources.html#bitmaps">&lt;bitmap&gt;</a>).
+	Pixels of that color are "outside" the window.<br>
+</td>
+</tr>
+<tr>
+<td valign=top>attach</td>
+<td>
+	Autosizing flags like in <a href="views.html">&lt;view&gt;</a>, can be a combination of "<font color=blue>left</font>", "<font color=blue>top</font>", "<font color=blue>right</font>", "<font color=blue>bottom</font>" separated with pipes<br>
+	e.g. "left|top", "right|bottom",...<br>
+	Currently stretching of areas is not supported, e.g. "left|right" is not possible.
+</td>
+</tr>
+<tr>
+<td valign=top>offset</td>
+<td>
+	distance between the area and the window edges where it's attached.<br>
+	If an offset coordinate is 0, the area touches the corresponding window edge,
+	so in most cases you don't need the offset (default is "0,0").
+	If an area is attached right, the offset is negative. The same holds for bottom.<br>
+
+
+</td>
+</tr>
+<tr>
+<td></td>
+<td>
+	<!-- figure explaining offset & attachment -->
+
+	<table border="1" cellpadding=0 cellspacing=0><tr><td>
+	<table border="0" cellpadding=5 cellspacing=0 bgcolor="#eeeeee">
+		<tr>
+			<td align=center>&nbsp;&nbsp;&nbsp;</td>
+			<td align=center>6</td>
+			<td align=center width=50>&nbsp;&nbsp;&nbsp;</td>
+			<td align=center>&nbsp;</td>
+			<td align=center>&nbsp;</td>
+		</tr>
+		<tr>
+			<td align=center>5</td>
+			<td bgcolor="lightblue">&lt;area ...<br>offset="5,6"/&gt;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td bgcolor="lightblue">&lt;area ...<br>offset="-4,-5"<br>attach="right|bottom"/&gt;</td>
+			<td align=center>&nbsp;4</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td align=center>&nbsp;5</td>
+			<td>&nbsp;</td>
+		</tr>
+	</table>
+	</td></tr></table>
+
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<!---------------------------------------------------------------------------------------------->
+
+<b>Example</b>:<br><br>
+the most typical case: four shapes for the corners of a window.<br>
+No offset is given, so all areas touch the window edges.
+Note that the "top" and "left" attachments could be ommited.
+Also note that the "noframe" style is not mandatory, but window shapes make most sense without an OS window frame.
+<br>
+<br>
+
+<div class="xmltag">
+&lt;resources&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;bitmap name="shapeTL" path="tl.bmp" mask="green"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;bitmap name="shapeTR" path="tr.bmp" mask="green"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;bitmap name="shapeBL" path="bl.bmp" mask="green"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;bitmap name="shapeBR" path="br.bmp" mask="green"/&gt;<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;<font color=blue><b>shape</b></font> name="myshape"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<font color=blue><b>area</b></font> <font color=green><b>bitmap</b></font>="shapeTL" <font color=green><b>attach</b></font>="top|left"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<font color=blue><b>area</b></font> <font color=green><b>bitmap</b></font>="shapeTR" <font color=green><b>attach</b></font>="top|right"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<font color=blue><b>area</b></font> <font color=green><b>bitmap</b></font>="shapeBL" <font color=green><b>attach</b></font>="bottom|left"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<font color=blue><b>area</b></font> <font color=green><b>bitmap</b></font>="shapeBR" <font color=green><b>attach</b></font>="bottom|right"/&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<font color=blue><b>shape</b></font>&lt;<br>
+&lt;/resources&gt;<br>
+<br>
+&lt;template ... style="noframe" <font color=green><b>shape</b></font>="myshape"&gt;<br>
+&nbsp;&nbsp;&nbsp;...<br>
+&lt;/template&gt;<br>
+<br>
+</div>
+
+<br>
+<br>
+
+<img src="gfx/more.gif"> <a href="resources.html#bitmaps">Bitmaps</a><br>
+<img src="gfx/more.gif"> <a href="templates.html">Templates</a><br>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<br>
+<div align=center>
+Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+All Rights Reserved.
+</div>
+<div align="center"><font size="1">Last Modified:    
+<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+<br>
+<!---------------------------------------------------------------------------------------------->
+
+</body>
+
+</html>

@@ -1,0 +1,313 @@
+<html>
+
+<head>
+	<title>Resources</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="uixml.css">
+</head>
+
+<body bgcolor=white text=black>
+
+<h2>Resources</h2>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="bitmaps"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>HOWTO include Bitmaps</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>bitmap</b></font>
+<font color=red><b>name</b></font>="..."
+<font color=red><b>path</b></font>="..."
+<font color=green><b>mask</b></font>="#color"
+<font color=green><b>alpha</b></font>="byte"
+/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>name</td>
+<td>
+	internal bitmap name (e.g. "PlayBtn")<br>
+	Controls inside the XML description refere to this name, it has to be unique.
+</td>
+</tr>
+<tr>
+<td valign=top>path</td>
+<td>
+	relative path to the bitmap file (e.g. "bitmaps\playbtn.bmp")
+</td>
+</tr>
+<tr>
+<td valign=top>mask</td>
+<td>
+	transparency color<br>
+	<img src="gfx/more.gif"> <a href="misc.html#colors" target="content">Howto describe colors</a>
+</td>
+</tr>
+<tr>
+<td valign=top>alpha</td>
+<td>
+	alpha value between 0 (transparent) and 255 (opaque)<br>
+	Can be written decimal or hexadecimal e.g. "#7F" equals "128".
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<big><b><u>Remarks</u></b>:</big><br>
+<br>
+- To <font color=red><b>enable per pixel alpha blending</b></font> (e.g. when using PNG graphics), you have to set the alpha attribute to "#FF!"<br>
+- Transparency color will be ignored if an alpha value is specified.<br>
+- For better performance, you should try to use simple transparency instead of per pixel alpha wherever possible!<br>
+<br>
+<img src="gfx/more.gif"> Supported <a href="misc.html#formats" target="content">Graphic file formats</a><br>
+
+<br>
+<br>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>section</b></font> name="..." path="..." <font color=red><b>rect</b></font>="left,top,right,bottom"/&gt;</big><br>
+</div>
+
+<br>
+A section describes a rectangular part inside a bitmap. The application "extracts" this part from the bitmap refered to by the <b>path</b> attribute.
+When specifing a bitmap for a control there is no difference if it is a &lt;bitmap&gt; or &lt;section&gt;.
+The section inherits the transparency settings from its source bitmap.<br>
+<br>
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>path</td>
+<td>
+	Path can be the internal name of a &lt;bitmap&gt; described in the resources section
+	or a filename. If you need to describe more sections from the same source bitmap,
+	you should include it once as &lt;bitmap&gt; instead of always writing the external filename
+	(this avoids unneccessary load/free of the same bitmap).<br>
+</td>
+</tr>
+<tr>
+<td valign=top>rect</td>
+<td>
+	Rectangle coordinates (e.g. "0,0,20,10")
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="filmstrip"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Filmstrip</h3>
+
+<div class="xmltag">
+<big>
+&lt;<font color=blue><b>filmstrip</b></font> name="..." path="..."
+<font color=red><b>framecount</b></font>="int"
+<font color=green><b>framealign</b></font>="..."
+<font color=green><b>interval</b></font>="int"
+<font color=green><b>defaultframe</b></font>="int"
+/&gt;</big><br>
+</div>
+
+<br>
+A filmstrip is a bitmap, which contains several frames of e.g. an animation.
+The frames can be aligned verticaly or horizontaly.<br>
+The &lt;filmstrip&gt; tag inherits attributes like <font color=green>mask</font> or <font color=green>alpha</font>
+from the &lt;bitmap&gt; tag.<br>
+<br>
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>framecount</td>
+<td>
+	number of frames in filmstrip
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>framealign</td>
+<td>
+	frame alignment, can be "<font color=blue>vertical</font>"* or "<font color=blue>horizontal</font>"
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>interval</td>
+<td>
+	time between frame updates (default is 100ms)
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>defaultframe</td>
+<td>
+	index of the frame to display, if the filmstrip is used as single bitmap (default is zero)
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<img src="gfx/more.gif"> <a href="animations.html">Animations</a><br>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="dynbitmap"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Dynamic Bitmap</h3>
+
+<div class="xmltag">
+<big>
+&lt;<font color=blue><b>dbitmap</b></font> name="..." path="..."
+<font color=red><b>center</b></font>="left,top,width,height"
+<font color=green><b>style</b></font>="..."
+/&gt;</big><br>
+</div>
+
+<br>
+The center rectangle divides the bitmap into 9 parts.<br>
+The 4 corners are always drawn in original size,
+while the other parts are either <i>scaled</i> or <i>repeated</i> to reach the requested size.
+<br>
+
+<br>
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>center</td>
+<td>
+	the center rectangle, which defines the 9 parts of the bitmap
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	can be a combination of "<font color=blue>hrepeat</font>", "<font color=blue>vrepeat</font>".<br>
+	specifies if the dynamic parts should be scaled (default) or repeated, separately for both directions.
+	<br>
+</td>
+</tr>
+
+</table>
+
+<p>
+<table border=1 width=200 cellspacing=0 align=center>
+<tr align=center>
+<td bgcolor=lightblue>fix</td>
+<td bgcolor=#aaaaaa width=80%>&nbsp;...&nbsp;</td>
+<td bgcolor=lightblue>fix</td>
+</tr>
+<tr align=center>
+<td bgcolor=#aaaaaa>.<br>.<br>.</td>
+<td bgcolor=#eeeeee>...<br>...&nbsp;center&nbsp;...<br>...</td>
+<td bgcolor=#aaaaaa>.<br>.<br>.</td>
+</tr>
+<tr align=center>
+<td bgcolor=lightblue>fix</td>
+<td bgcolor=#aaaaaa>&nbsp;...&nbsp;</td>
+<td bgcolor=lightblue>fix</td>
+</tr>
+</table>
+
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="collections"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Bitmap Collections</h3>
+
+<div class="xmltag">
+<big>
+&lt;<font color=blue><b>collection</b></font> name</b>="..."&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;bitmap name="... /&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+&lt;/collection&gt;
+</big><br>
+</div>
+
+<br>
+A collection describes a certain set of bitmaps. Some controls (e.g. scrollbars) require bitmap collections.
+Which bitmaps have to be included in a collection, depends on the control.<br>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="cursors"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>HOWTO include Cursors</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>cursor</b></font> <font color=red><b>name</b></font>="..." <font color=red><b>path</b></font>="..."/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>name</td>
+<td>
+	internal cursor name<br>
+</td>
+</tr>
+<tr>
+<td valign=top>path</td>
+<td>
+	relative path to cursor file (e.g. "cursors\arrow.cur")<br>
+	Windows specific: The cursor resource has to be a valid Windows Cursor File (.cur)
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<br>
+<div align=center>
+Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+All Rights Reserved.
+</div>
+<div align="center"><font size="1">Last Modified:    
+<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+<br>
+<!---------------------------------------------------------------------------------------------->
+
+</body>
+
+</html>

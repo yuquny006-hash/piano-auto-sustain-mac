@@ -1,0 +1,268 @@
+<html>
+
+<head>
+	<title>Plug-In Parameters</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="sdkdoc.css">
+</head>
+
+<body>
+<div>
+
+<table border=0 width=600>
+<tr>
+	<td>
+		<h1>Plug-In Parameters</h1>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="IPlugController">
+		<h3>IPlugController</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="funknown.html">FUnknown</a> &lt;- IPlugController<br>
+			<b>Include File</b>:&nbsp; iplugparams.h
+			</div>
+		</p>
+
+		<p>
+		A Plug-In exposes its parameters to the host application with the <i>IPlugController</i> interface.
+		The host asks for parameter objects which are then used e.g. for Automation, <a href="plugstorage.html">Storage</a> and <a href="plugui.html">User Interface</a> issues.<br>
+		<br>
+		In practice, Plug-Ins should implement <a href="#IGenericPlugController">IGenericPlugController</a> which is
+		derived from <i>IPlugController</i> and provides additional functionality, e.g. to enumerate the available parameters.
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#IPlugController_getParameter">IPlugController::getParameter</a>
+			<li><a href="#IPlugController_parameterChanged">IPlugController::parameterChanged</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPlugController_getParameter">
+		<h4>IPlugController::getParameter</h4>
+		<div class=cpp>tresult PLUGIN_API <b>getParameter</b> (const char* name, <a href="#IParameter">IParameter</a>** pp)</div>
+
+		<p>
+		Get a parameter by name. On return, <i>pp</i> has to be set to an <i>IParameter</i> pointer,
+		or NULL if the specified name is invalid.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		The Plug-In or host must NOT increment the reference count of the parameter object. Parameters have to exist as long
+		as their controllers exist and must be destroyed afterwards.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IPlugController_parameterChanged">
+		<h4>IPlugController::parameterChanged</h4>
+		<div class=cpp>tresult PLUGIN_API <b>parameterChanged</b> (<a href="#IParameter">IParameter</a>* p, long tag)</div>
+
+		<p>
+		The value of parameter <i>p</i> has changed. The reason may be Plug-In Automation or a control
+		manipulation in the Plug-In Editor by the user.
+		<i>tag</i> is the identifier assigned to this parameter with <a href="#IParameter_connect">IParameter::connect</a>.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="IGenericPlugController">
+		<h3>IGenericPlugController</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="funknown.html">FUnknown</a> &lt;- <a href="#IPlugController">IPlugController</a> &lt;- IGenericPlugController<br>
+			<b>Include File</b>:&nbsp; iplugparams.h
+			</div>
+		</p>
+
+		<p>
+		The <i>IGenericPlugController</i> interface allows the host to enumerate the available parameters of a Plug-In.
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#IGenericPlugController_countParameters">IGenericPlugController::countParameters</a>
+			<li><a href="#IGenericPlugController_getParameterName">IGenericPlugController::getParameterName</a>
+			<li><a href="#IGenericPlugController_getParameterIndexed">IGenericPlugController::getParameterIndexed</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IGenericPlugController_countParameters">
+		<h4>IGenericPlugController::countParameters</h4>
+		<div class=cpp>long PLUGIN_API <b>countParameters</b> ()</div>
+
+		<p>
+		Returns the number of available parameters.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IGenericPlugController_getParameterName">
+		<h4>IGenericPlugController::getParameterName</h4>
+		<div class=cpp>tresult PLUGIN_API <b>getParameterName</b> (long index, char str[128])</div>
+
+		<p>
+		Copy the name of a parameter at position <i>index</i> into buffer <i>str</i>.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IGenericPlugController_getParameterIndexed">
+		<h4>IGenericPlugController::getParameterIndexed</h4>
+		<div class=cpp>tresult PLUGIN_API <b>getParameterIndexed</b> (long index, <a href="#IParameter">IParameter</a>** pp)</div>
+
+		<p>
+		Get the parameter object at the specified index. On return, <i>pp</i> has to be set to an <i>IParameter</i> pointer,
+		or NULL if the specified index is invalid.
+		</p>
+
+		<p>
+		<img src="gfx/more.gif">&nbsp; See remarks for <a href="#IPlugController_getParameter">IPlugController::getParameter</a>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="IParameter">
+		<h3>IParameter</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="funknown.html">FUnknown</a> &lt;- IParameter<br>
+			<b>Include File</b>:&nbsp; iplugparams.h
+			</div>
+		</p>
+
+		<p>
+		This interface represents a parameter object. It has methods to manipulate its current value,
+		string conversion, etc.
+		</p>
+
+		<p>
+		The SDK provides implementations of basic parameter types (integer, string, list) which
+		should meet most requirements.<br>
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#IParameter_toString">IParameter::toString</a>
+			<li><a href="#IParameter_fromString">IParameter::fromString</a>
+			<li><a href="#IParameter_getValue">IParameter::getValue</a>
+			<li><a href="#IParameter_setValue">IParameter::setValue</a>
+			<li><a href="#IParameter_getMinValue">IParameter::getMinValue</a>
+			<li><a href="#IParameter_getMaxValue">IParameter::getMaxValue</a>
+			<li><a href="#IParameter_connect">IParameter::connect</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IParameter_toString">
+		<h4>IParameter::toString</h4>
+		<div class=cpp>void PLUGIN_API <b>toString</b> (char str[128])</div>
+
+		<p>
+		Converts the current value to its string representation e.g. a value of zero can produce
+		strings like "0", "Zero", "Off", ...
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IParameter_fromString">
+		<h4>IParameter::fromString</h4>
+		<div class=cpp>void PLUGIN_API <b>fromString</b> (const char* str)</div>
+
+		<p>
+		Sets the current value from a string e.g. the string is "Off", could mean a parameter value of zero.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IParameter_getValue">
+		<h4>IParameter::getValue</h4>
+		<div class=cpp>long PLUGIN_API <b>getValue</b> ()</div>
+
+		<p>
+		Returns the current integer value of a parameter.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IParameter_setValue">
+		<h4>IParameter::setValue</h4>
+		<div class=cpp>void PLUGIN_API <b>setValue</b> (long value)</div>
+
+		<p>
+		Sets the current parameter value.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IParameter_getMinValue">
+		<h4>IParameter::getMinValue</h4>
+		<div class=cpp>long PLUGIN_API <b>getMinValue</b> ()</div>
+
+		<p>
+		Returns the minimum integer value of a parameter.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IParameter_getMaxValue">
+		<h4>IParameter::getMaxValue</h4>
+		<div class=cpp>long PLUGIN_API <b>getMaxValue</b> ()</div>
+
+		<p>
+		Returns the maximum integer value of a parameter.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IParameter_connect">
+		<h4>IParameter::connect</h4>
+		<div class=cpp>void PLUGIN_API <b>connect</b> (<a href="#IPlugController">IPlugController</a>* c, long tag)</div>
+
+		<p>
+		Connects a parameter to a controller object, using the specified identifier <i>tag</i>.
+		The specified controller <i>c</i> then will be notified on value changes through its
+		<a href="#IPlugController_parameterChanged">IPlugController::parameterChanged</a> method.<br>
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		Initially, all public parameter objects must be connected to the controller which exposes those parameters
+		to the host application. The host does NOT modify parameter connections!
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<br>
+		<hr noshade size=4>
+		<div align=center>
+		Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+		All Rights Reserved.
+		</div>
+		<div align="center"><font size="1">Last Modified:
+		<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+		<br>
+		<!---------------------------------------------------------------------------------------------->
+	</td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

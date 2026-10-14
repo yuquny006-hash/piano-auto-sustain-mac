@@ -1,0 +1,241 @@
+<html>
+
+<head>
+	<title>IMidiEffect</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan, Werner Kracht">
+	<link rel="stylesheet" type="text/css" href="../sdkdoc.css">
+</head>
+
+<body>
+<div>
+
+<table border=0 width=600>
+<tr>
+	<td>
+		<h1>IMidiEffect</h1>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="IMidiEffect">
+		<h3>IMidiEffect</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="../funknown.html">FUnknown</a> &lt;- <a href="../pluginbase.html#IPluginBase">IPluginBase</a> &lt;- IMidiEffect<br>
+			<b>Include File</b>:&nbsp; imidieffect.h
+			</div>
+		</p>
+
+		<p>
+		The <i>IMidiEffect</i> interface describes a MIDI effect.
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#IMidiEffect_getCaps">IMidiEffect::getCaps</a>
+			<li><a href="#IMidiEffect_configure">IMidiEffect::configure</a>
+			<li><a href="#IMidiEffect_receiveEvent">IMidiEffect::receiveEvent</a>
+			<li><a href="#IMidiEffect_playAction">IMidiEffect::playAction</a>
+			<li><a href="#IMidiEffect_positAction">IMidiEffect::positAction</a>
+			<li><a href="#IMidiEffect_swapAction">IMidiEffect::swapAction</a>
+			<li><a href="#IMidiEffect_stopAction">IMidiEffect::stopAction</a>
+			<li><a href="#IMidiEffect_startAction">IMidiEffect::startAction</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMidiEffect_getCaps">
+		<h4>IMidiEffect::getCaps</h4>
+		<div class=cpp>tresult PLUGIN_API <b>getCaps</b> (<a href="metypes.html#MidiEffectCaps">MidiEffectCaps</a>* c)</div>
+
+		<p>
+		Fill a <i>MidiEffectCaps</i> structure with the capabilities of the effect.
+		</p>
+
+		<p>
+			<b><u>Capability flags</u></b>:<br>
+			<br>
+			<table border=1 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+			<tr>
+				<td><i>kMEIsEditable</i></td>
+				<td>Plug-In has an editor (requires <a href="../plugui.html#IUIFactory">IUIFactory</a>)</td>
+			</tr>
+			<tr>
+				<td><i>kMEHasInspector</i></td>
+				<td>Plug-In has an inspector view (requires <a href="../plugui.html#IUIFactory">IUIFactory</a>)</td>
+			</tr>
+			</table>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMidiEffect_configure">
+		<h4>IMidiEffect::configure</h4>
+		<div class=cpp>tresult PLUGIN_API <b>configure</b> (long usage)</div>
+
+		<p>
+		Configure a MIDI effect for the specified use.
+		</p>
+
+		<p>
+			<b><u>Usage types</u></b>:<br>
+			<br>
+			<table border=1 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+			<tr>
+				<td><i>kMEUsageInsert</i></td>
+				<td>Plug-In is used as a track insert</td>
+			</tr>
+			<tr>
+				<td><i>kMEUsageSend</i></td>
+				<td>Plug-In is used as a send effect</td>
+			</tr>
+			<tr>
+				<td><i>kMEUsageOffline</i></td>
+				<td>Plug-In is used for offline processing</td>
+			</tr>
+			</table>
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		Offline processing for MIDI Plug-Ins is not yet implemented in Cubase SX.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMidiEffect_receiveEvent">
+		<h4>IMidiEffect::receiveEvent</h4>
+		<div class=cpp>tresult PLUGIN_API <b>receiveEvent</b> (IMEObjectID event)</div>
+
+		<p>
+		Receives one MIDI event from the host application.
+		You can determine if this is an immediate event ("MIDI Thru") by calling
+		<a href="meaccessor.html#IMEAccessor_Immediate">IMEAccessor::isImmediateEvent</a> with
+		the specified event handle.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		If you need to queue the received event internally, you have to create a copy with
+		<a href="meaccessor.html#IMEAccessor_duplicateMidiEvent">IMEAccessor::duplicateMidiEvent</a>.
+		The typical action if you are not using an event is to pass it on to the output directly by calling
+		<a href="meaccessor.html#IMEAccessor_passToOutput">IMEAccessor::passToOutput</a>.<br>
+		<font color=red>
+		If you don't pass an event back to the host application, it will be swallowed. DO NOT destroy
+		the event in this case!
+		</font>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMidiEffect_playAction">
+		<h4>IMidiEffect::playAction</h4>
+		<div class=cpp>tresult PLUGIN_API <b>playAction</b> (long fromPPQ, long toPPQ, bool immediate)</div>
+
+		<p>
+		The effect should process the specified time slice from <i>fromPPQ</i> to <i>toPPQ</i>
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+  		The parameter <i>immediate</i> indicates the playing process for "immediate" (thru) events.
+   		<i>IMidiEffect::playAction</i> will be called two times for immediate and non immediate
+   		(playback) events, if the effect is configured as
+   		<a href="meaccessor.html#IMEAccessor_setCanPlayInStop">IMEAccessor::setCanPlayInStop</a>.
+   		The Plug-In programmer may be forced to handle both processes by using
+   		different queues for incoming events here.
+   		It is possible that events are created that have a start time which
+		is already outside the playrange. The Plug-In must not "forget" them in the event queue.<br>
+		<br>
+		<img src="../gfx/more.gif">&nbsp; <a href="meaccessor.html#IMEAccessor_passToOutput">IMEAccessor::passToOutput</a><br>
+		<img src="../gfx/more.gif">&nbsp; <a href="meaccessor.html#IMEAccessor_passToOutputQueue">IMEAccessor::passToOutputQueue</a>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMidiEffect_positAction">
+		<h4>IMidiEffect::positAction</h4>
+		<div class=cpp>tresult PLUGIN_API <b>positAction</b> (long position)</div>
+
+		<p>
+		The sequencer engine locates a new PPQ position.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		Make sure to update your internal play positions!
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMidiEffect_swapAction">
+		<h4>IMidiEffect::swapAction</h4>
+		<div class=cpp>tresult PLUGIN_API <b>swapAction</b> (long position, long length)</div>
+
+		<p>
+		The sequencer engine jumps to another PPQ position without restarting ("Cycle Mode").
+		The <i>length</i> parameter is the cycle length in PPQ.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		Make sure to update your internal play positions!
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMidiEffect_stopAction">
+		<h4>IMidiEffect::stopAction</h4>
+		<div class=cpp>tresult PLUGIN_API <b>stopAction</b> (long position)</div>
+
+		<p>
+		The sequencer engine has stopped at the specified PPQ position.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		Make sure to update your internal play positions!
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IMidiEffect_startAction">
+		<h4>IMidiEffect::startAction</h4>
+		<div class=cpp>tresult PLUGIN_API <b>startAction</b> (long position)</div>
+
+		<p>
+		The sequencer engine starts at the specified PPQ position.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		Make sure to update your internal play positions!
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<br>
+		<hr noshade size=4>
+		<div align=center>
+		Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+		All Rights Reserved.
+		</div>
+		<div align="center"><font size="1">Last Modified:
+		<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+		<br>
+		<!---------------------------------------------------------------------------------------------->
+	</td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

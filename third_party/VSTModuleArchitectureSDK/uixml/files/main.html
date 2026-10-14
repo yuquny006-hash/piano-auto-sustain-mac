@@ -1,0 +1,220 @@
+<html>
+
+<head>
+	<title>General</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="uixml.css">
+</head>
+
+<body bgcolor=white text=black>
+<a name="pagetop">
+
+<h2>General</h2>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="general"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>About XML in general</h3>
+
+The e<b>X</b>tensible <b>M</b>arkup <b>L</b>anguage (XML) is a universal format for structured documents and data.<br>
+
+<br>
+<br>
+
+<table border=1 cellspacing=0 cellpadding=8 bordercolor=lightgrey>
+<tr>
+<td valign=top>
+	XML tags
+</td>
+<td>
+	<font color=red>&lt;</font><b>tag</b> attribute1="..." attribute2="..." <font color=red>&gt;</font><br>
+	<font color=red>&lt;/</font><b>tag</b><font color=red>&gt;</font><br>
+	<br>
+	or<br>
+	<br>
+	<font color=red>&lt;</font><b>tag</b> attribute1="..." attribute2="..." <font color=red>/&gt;</font><br>
+</td>
+</tr>
+<tr>
+<td valign=top>
+	Comments
+</td>
+<td>
+	<font color=red>&lt;!--</font> your comment here <font color=red>--&gt;</font>
+</td>
+</tr>
+</table>
+
+<br>
+Note that XML is <b>case-sensitive!!!</b><br>
+
+<br>
+<br>
+
+<u>For more information about XML see</u>:
+<ul>
+<li><a href="http://www.w3.org/XML/" target="_blank">http://www.w3.org/XML/</a>
+<li><a href="http://www.xml.com" target="_blank">http://www.xml.com</a>
+</ul>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="structure"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Skin XML Structure</h3>
+
+<table border=0>
+<tr>
+<td width=20>&nbsp;</td>
+<td>
+	<table border=0 cellspacing=0 cellpadding=8 bordercolor=darkgray>
+	<tr>
+	<td>
+		&lt;<b>skin</b>&gt;*<br>
+		<br>
+
+		<div style="background-color:#DDDDDD;border:1px solid black;">
+		<br>
+		<b>&lt;<a href="header.html" target=content>header</a>&gt;</b><br>
+		<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- meta information --&gt;<br>
+		<br>
+		<b>&lt;/header&gt;</b><br>
+		<br>
+		</div>
+
+		<div style="background-color:#EEEEEE;border:1px solid black;">
+		<br>
+		<b>&lt;<a href="resources.html" target=content>resources</a>&gt;</b><br>
+		<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- include all resources here --&gt;<br>
+		<br>
+		<b>&lt;/resources&gt;</b><br>
+		<br>
+		</div>
+
+		<div style="background-color:#DDDDDD;border:1px solid black;">
+		<br>
+		&lt;<b>templates</b>&gt;*<br>
+		<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;<b>&lt;<a href="templates.html" target=content>template</a> name="...&gt;</b><br>
+		<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- describe the appearance of a view/window --&gt;<br>
+		<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;<b>&lt;/template&gt;</b><br>
+		<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- some more templates... --&gt;<br>
+		<br>
+		&lt;/<b>templates</b>&gt;*<br>
+		<br>
+		</div>
+
+		<div style="background-color:#EEEEEE;border:1px solid black;">
+		<br>
+		<b>&lt;<a href="scheme.html" target=content>scheme</a>&gt;</b><br>
+		<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- set standard colors, sizes,... --&gt;<br>
+		<br>
+		<b>&lt;/scheme&gt;</b><br>
+		<br>
+		</div>
+
+		<!--
+		<div style="background-color:#DDDDDD;border:1px solid black;">
+		<br>
+		&lt;<b>scripts</b>&gt;<br>
+		<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;<b>&lt;<a href="scripts.html#scripttag" target=content>script</a> name="...&gt;</b><br>
+		<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;!-- script code --&gt;<br>
+		<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;<b>&lt;/script&gt;</b><br>
+		<br>
+		&lt;/<b>scripts</b>&gt;<br>
+		<br>
+		</div>
+		-->
+
+		<br>
+		&lt;/<b>skin</b>&gt;<br>
+		<br>
+		<br>
+		* optional
+	</td>
+	</tr>
+	</table>
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="readthis"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Documentation styles</h3>
+
+<table border=0 cellspacing=0 cellpadding=2>
+<tr>
+<td>
+	<font color=blue><b>blue bold text</b></font>
+</td>
+<td>=></td>
+<td>
+	tag name
+</td>
+</tr>
+<tr>
+<td>
+	<font color=red><b>red bold text</b></font>
+</td>
+<td>=></td>
+<td>
+	attribute (must be specified!)
+</td>
+</tr>
+<tr>
+<td>
+	<font color=green><b>green bold text</b></font>
+</td>
+<td>=></td>
+<td>
+	optional attribute
+</td>
+</tr>
+<tr>
+<td>
+	<font color=blue>small blue text</font>
+</td>
+<td>=></td>
+<td>
+	available attribute values (* means default value)
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<br>
+<div align=center>
+Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+All Rights Reserved.
+</div>
+<div align="center"><font size="1">Last Modified:    
+<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+<br>
+<!---------------------------------------------------------------------------------------------->
+
+</body>
+
+</html>

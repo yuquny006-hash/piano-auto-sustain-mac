@@ -1,0 +1,18 @@
+# Licensed source must never silently produce an unrestricted Mac binary.
+set(PAS_MAC_PUBLIC_KEY_HEX "" CACHE STRING "Server Ed25519 public key (64 uppercase hex characters)")
+set(PAS_SODIUM_ROOT "" CACHE PATH "Universal static libsodium installation")
+string(LENGTH "${PAS_MAC_PUBLIC_KEY_HEX}" _key_length)
+if(NOT _key_length EQUAL 64 OR NOT PAS_MAC_PUBLIC_KEY_HEX MATCHES "^[0-9A-F]+$")
+  message(FATAL_ERROR "Provide PAS_MAC_PUBLIC_KEY_HEX from the server; never a private key")
+endif()
+if(NOT EXISTS "${PAS_SODIUM_ROOT}/lib/libsodium.a" OR NOT EXISTS "${PAS_SODIUM_ROOT}/include/sodium.h")
+  message(FATAL_ERROR "Run scripts/build-mac-licensed.sh to build universal static libsodium")
+endif()
+add_library(pas_sodium STATIC IMPORTED)
+set_target_properties(pas_sodium PROPERTIES IMPORTED_LOCATION "${PAS_SODIUM_ROOT}/lib/libsodium.a"
+  INTERFACE_INCLUDE_DIRECTORIES "${PAS_SODIUM_ROOT}/include")
+function(pas_enable_mac_license target)
+  target_sources(${target} PRIVATE Source/Licensing/MacLicense.cpp Source/Licensing/MacLicenseVerification.cpp)
+  target_compile_definitions(${target} PUBLIC PAS_LICENSED_MAC=1 PAS_MAC_PUBLIC_KEY_HEX="${PAS_MAC_PUBLIC_KEY_HEX}")
+  target_link_libraries(${target} PRIVATE pas_sodium juce::juce_cryptography "-framework IOKit" "-framework CoreFoundation")
+endfunction()

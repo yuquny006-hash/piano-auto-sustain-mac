@@ -1,0 +1,11 @@
+{
+  "publicKey": "75F6A786CB495C5DE0C060688835595E5C61B1A66E7044AACF963C61CD4E28A3",
+  "license": {
+    "expiresAt": null,
+    "licenseKey": "LC-TEST-ONLY",
+    "machineHash": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "productId": "AMU_PIANO_AUTO_SUSTAIN",
+    "schema": 1,
+    "signature": "h9OfLCZRShjI30wArv+rtB5xeXlt59H3mQnHXFrR6fbgBDL6elB7wtMukWpuwBJ3FxMjCqphKHtio9PoamBpAQ=="
+  }
+}

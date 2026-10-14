@@ -1,0 +1,960 @@
+<html>
+
+<head>
+	<title>Controls</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="uixml.css">
+</head>
+
+<body bgcolor=white text=black>
+
+<h2>Controls</h2>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="buttons"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Button/Switch</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>button</b></font> name="... /&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+A button usually is an OS specific control. The &lt;button&gt; tag inherits all &lt;view&gt; attributes, it doesn't implement new ones.<br>
+
+<br>
+<br>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>helpbutton</b></font> <font color=green><b>locator</b></font>="..."/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+A click opens the help system at the specified location.<br>
+
+<br>
+<br>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>switch</b></font> name="..." title="..."
+<font color=green><b>style</b></font>="..."
+<font color=green><b>bitmap</b></font>="..."
+<font color=green><b>icon</b></font>="..."
+<font color=green><b>blink</b></font>="..."
+/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	<u>Defines the behaviour</u>:<br>
+	<table border=0 cellspacing=0 cellpadding=2>
+	<tr><td width=50><font color=blue>push</font></td><td>- bitmap has two parts (normal and pushed)</td></tr>
+	<tr><td><font color=blue>on</font></td><td>&nbsp;</td></tr>
+	<tr><td><font color=blue>onoff</font>*</td><td>- bitmap has four parts (normal &amp; pushed for each stage)</td></tr>
+	<tr><td><font color=blue>edit</font></td><td>- string specified in title could be edited on Double-Click</td></tr>
+	</table>
+	<br>
+	<u>Additional styles</u>:<br>
+	<table border=0 cellspacing=0 cellpadding=2>
+	<tr><td><font color=blue>immediate</font></td><td>- the switch acts on mouse-down, not on mouse-up</td></tr>
+	<tr><td><font color=blue>rollover</font></td><td>- bitmap has three parts for each stage (normal, pushed, rollover)</td></tr>
+	</tr>
+	</table>
+</td>
+</tr>
+<tr>
+<td valign=top>bitmap</td>
+<td>
+	referes to a bitmap in resources section<br>
+</td>
+</tr>
+<tr>
+<td valign=top>icon</td>
+<td>
+	if specified, an icon switch will be created (the <font color="green">icon</font> is drawn onto the <font color="green">bitmap</font>).
+</td>
+</tr>
+<tr>
+<td valign=top>blink</td>
+<td>
+	specifies the name of an application-specific value that controls blinking of the switch<br>
+	If it's not specified, the switch does not blink.
+	When blinking, the displayed state changes between pressed and not pressed.
+</td>
+</tr>
+<tr>
+<td valign=top>title</td>
+<td>
+	if a title is specified, a text switch will be created where the title will be displayed on
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<u>Button States</u>:<br>
+<br>
+The bitmap of a switch is divided vertically into two or or three (rollover) sections per stage, depending on its style.
+
+<br>
+<br>
+
+<table>
+<tr valign=top>
+	<td>
+	<font color=blue>onoff</font>/<font color=blue>on</font> style:&nbsp;&nbsp;
+	</td>
+	<td>
+	<table border="1" cellpadding=2 cellspacing=0>
+		<tr><td align=center bgcolor="#aaaaaa">off, not pressed</td></tr>
+		<tr><td align=center bgcolor="#eeeeee">off, pressed</td></tr>
+		<tr><td align=center bgcolor=lightblue>off, rollover</td></tr>
+		<tr><td align=center bgcolor="#aaaaaa">on, not pressed</td></tr>
+		<tr><td align=center bgcolor="#eeeeee">on, pressed</td></tr>
+		<tr><td align=center bgcolor=lightblue>on, rollover</td></tr>
+	</table>
+</td>
+<td>
+	&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td>
+	<font color=blue>push</font> style:&nbsp;&nbsp;
+</td>
+<td>
+	<table border="1" cellpadding=2 cellspacing=0>
+		<tr><td align=center bgcolor="#aaaaaa">not pressed</td></tr>
+		<tr><td align=center bgcolor="#eeeeee">pressed</td></tr>
+		<tr><td align=center bgcolor=lightblue>rollover</td></tr>
+	</table>
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<img src="gfx/more.gif"> <a href="animations.html#switches">HOWTO animate switches</a>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="checkradio"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Checkbox/Radiobutton</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>checkbox</b></font> name="... /&gt;</big>
+</div><br>
+
+<br>
+<br>
+
+A checkbox usually is an OS specific control. The &lt;checkbox&gt; tag inherits all &lt;view&gt; attributes, it doesn't implement new ones.<br>
+
+<br>
+<br>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>radiobutton</b></font> name="... /&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+A radiobutton usually is an OS specific control. The &lt;radiobutton&gt; tag inherits all &lt;view&gt; attributes, it doesn't implement new ones.<br>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="radiogroup"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Radiogroup</h3>
+
+<div class="xmltag">
+<big>
+&lt;<font color=blue><b>radiogroup</b></font> name="..." <font color=green><b>align</b></font>="..."&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color=darkgray>&lt;!-- place controls here --&gt;</font><br>
+&lt;/radiogroup&gt;<br>
+</big>
+</div>
+
+<br>
+<br>
+
+All controls in a radiogroup behave "mutual exclusive", that means only one control can be switched on at a time.
+It is mainly used for radiobuttons.<br>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>align</td>
+<td>
+	alignment of controls inside the radiogroup, can be "<font color=blue>horiz</font>" or "<font color=blue>vert</font>"*.
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="scrollbar"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Scrollbar</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>scrollbar</b></font> name="..." <font color=green><b>style</b></font>="..." <font color=green><b>bitmaps</b></font>="..."/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	can be "<font color=blue>horizontal</font>"* or "<font color=blue>vertical</font>"
+</td>
+</tr>
+<tr>
+<td valign=top>bitmaps</td>
+<td>
+	referes to a <a href="resources.html#collections" target=content>bitmap collection</a> with the following bitmaps:<br>
+	<br>
+	&lt;collection name="... &gt;<br>
+	&nbsp;&nbsp;&lt;bitmap name="UpButton" ... /&gt;<br>
+	&nbsp;&nbsp;&lt;bitmap name="DownButton" ... /&gt;<br>
+	&nbsp;&nbsp;&lt;bitmap name="VerticalBack" ... /&gt;<br>
+	&nbsp;&nbsp;&lt;bitmap name="VerticalHandle" ... /&gt;<br>
+	&nbsp;&nbsp;&lt;bitmap name="VerticalHandleTop" ... /&gt;<br>
+	&nbsp;&nbsp;&lt;bitmap name="VerticalHandleBottom" ... /&gt;<br>
+	&nbsp;&nbsp;&lt;bitmap name="LeftButton" ... /&gt;<br>
+	&nbsp;&nbsp;&lt;bitmap name="RightButton" ... /&gt;<br>
+	&nbsp;&nbsp;&lt;bitmap name="HorizontalBack" ... /&gt;<br>
+	&nbsp;&nbsp;&lt;bitmap name="HorizontalHandle" ... /&gt;<br>
+	&nbsp;&nbsp;&lt;bitmap name="HorizontalHandleLeft" ... /&gt;<br>
+	&nbsp;&nbsp;&lt;bitmap name="HorizontalHandleRight" ... /&gt;<br>
+	&lt;/collection&gt;<br>
+	<br>
+	If the <font color=green>bitmaps</font> attribute is not specified, an OS specific scrollbar will be created.
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="slider"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Slider</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>slider</b></font> name="..."
+<font color=green><b>style</b></font>="..."
+<font color=green><b>handle</b></font>="..."
+<font color=green><b>background</b></font>="..."
+<font color=green><b>offset</b></font>="x,y"
+<font color=green><b>defaultval</b></font>="int"
+/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+If no handle and/or background bitmaps are specified, a OS specific slider will be created.<br>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	<u>defines the direction</u>:<br>
+	<font color=blue>horizontal</font>*,<br>
+	<font color=blue>horizontal-small</font>,<br>
+	<font color=blue>vertical</font> or<br>
+	<font color=blue>vertical-small</font>
+</td>
+</tr>
+<tr>
+<td valign=top>handle</td>
+<td>
+	handle bitmap
+</td>
+</tr>
+<tr>
+<td valign=top>background</td>
+<td>
+	background bitmap
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>offset</td>
+<td>
+	offset to actual background in background bitmap
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>defaultval</td>
+<td>
+	default value
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="knob"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Knob</h3>
+
+<div class="xmltag">
+1) <big>&lt;<font color=blue><b>knob</b></font> name="..." <font color=green><b>handle</b></font>="..." <font color=green><b>background</b></font>="..." <font color=green><b>offset</b></font>="x,y" [<font color=black><b>knobmode</b></font>="..."]/&gt;</big><br>
+</div>
+<br>
+<div class="xmltag">
+2) <big>&lt;<font color=blue><b>knob</b></font> name="..." <font color=green><b>bitmap</b></font>="..."/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+A knob can be described in two different ways:<br>
+<br>
+1) It consists of a background and a handle bitmap, where the handle is moved circular to display the knob position.<br>
+2) All knob positions are rendered in a filmstrip.<br>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td valign=top>handle</td>
+<td>
+	handle bitmap
+</td>
+</tr>
+<tr>
+<td valign=top>background</td>
+<td>
+	background bitmap
+</td>
+</tr>
+<tr>
+<td valign=top>offset</td>
+<td>
+	background offset
+</td>
+</tr>
+<tr>
+<td valign=top>bitmap</td>
+<td>
+	filmstrip which contains the knob positions
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>knobmode</td>
+<td>
+	<b>Changes the behaviour for all (!!) knobs:</b><br>
+	<br>
+	<font color=blue>circular</font>*,<br>
+	<font color=blue>relativ-circular</font> or<br>
+	<font color=blue>linear</font><br>
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<img src="gfx/more.gif"> <a href="resources.html#filmstrip">Filmstrip</a><br>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="textdisplay"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Text Displays/Edit</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>text</b></font> name="..." <font color=green><b>style</b></font>="..." <font color=green><b>just</b></font>="..." <font color=green><b>bgcolor</b></font>="#color" <font color=green><b>displaywidth</b></font>="integer"/&gt;</big><br>
+<big>&lt;<font color=blue><b>edit</b></font> name="..." <font color=green><b>style</b></font>="..." <font color=green><b>just</b></font>="..." <font color=green><b>bgcolor</b></font>="#color" <font color=green><b>displaywidth</b></font>="integer"/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	<u>Can be a combination of</u>:
+	<table border=0 cellspacing=0 cellpadding=2>
+	<tr><td><font color=blue>border</font></td><td>- control has a border</td><tr>
+	<tr><td><font color=blue>no-title</font></td><td>- control has no title</td><tr>
+	<tr><td><font color=blue>title-right</font></td><td>- title is right-aligned</td><tr>
+	<tr><td><font color=blue>no-clipboard</font></td><td>- disable copy &amp; paste</td><tr>
+	<tr><td><font color=blue>visible-inactive</font></td><td>- text accessible if not active</td><tr>
+	<tr><td><font color=blue>led</font></td><td>- black background</td><tr>
+	<tr><td><font color=blue>fit-string</font></td><td>- fit string to display width</td><tr>
+	<tr><td><font color=blue>transparent</font></td><td>- control is transparent</td><tr>
+	</table>
+	<br>
+	e.g. "border|title-right|fit-string"
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>just</td>
+<td>
+	text justification, can be a combination of
+	<font color=blue>"left"</font>,
+	<font color=blue>"top"</font>,
+	<font color=blue>"right"</font>,
+	<font color=blue>"bottom"</font>
+	separated with pipes
+	(e.g. "left|top")
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>bgcolor</td>
+<td>
+	background color
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>displaywidth</td>
+<td>
+	display width
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>valuebox</b></font> name="..." <font color=green><b>style</b></font>="..."/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	<u>Additional styles</u>:<br>
+	<table border=0 cellspacing=0 cellpadding=2>
+	<tr><td><font color=blue>no-updown</font></td><td>- no up/down box</td><tr>
+	<tr><td><font color=blue>popup-slider</font></td><td>- popup a slider</td><tr>
+	<tr><td><font color=blue>doubleclick</font></td><td>- double-click editing</td><tr>
+	</table>
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>rationalbox</b></font> name="..." <font color=green><b>style</b></font>="..."/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	<u>Additional styles</u>:<br>
+	<table border=0 cellspacing=0 cellpadding=2>
+	<tr><td><font color=blue>border</font></td><td>- special border</td><tr>
+	</table>
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>optmenu</b></font> name="..." <font color=green><b>style</b></font>="..."/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	<u>Additional styles</u>:<br>
+	<table border=0 cellspacing=0 cellpadding=2>
+	<tr><td><font color=blue>transparent</font></td><td>- control is transparent</td><tr>
+	<tr><td><font color=blue>nodropdown</font></td><td>- no drop-down box</td><tr>
+	<tr><td><font color=blue>commandmenu</font></td><td>- menu behaves like a command menu</td><tr>
+	<tr><td><font color=blue>menubreak</font></td><td>- page break for large menus (Windows only)</td><tr>
+	</table>
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="updown"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>UpDown Box</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>updownbox</b></font> name="..." <font color=green><b>style</b></font>="..."/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	<table border=0 cellspacing=0 cellpadding=2>
+	<tr><td><font color=blue>updown</font></td></tr>
+	<tr><td><font color=blue>leftright</font></td></tr>
+	<tr><td><font color=blue>up</font></td></tr>
+	<tr><td><font color=blue>down</font></td></tr>
+	<tr><td><font color=blue>left</font></td></tr>
+	<tr><td><font color=blue>right</font></td></tr>
+	<tr><td><font color=blue>transparent</font></td></tr>
+	<tr><td><font color=blue>repeat</font></td></tr>
+	</table>
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="image"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Image</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>image</b></font>
+<font color=red><b>bitmap</b></font>="..."
+<font color=green><b>style</b></font>="..."
+/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>bitmap</td>
+<td>
+	bitmap to display
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+
+	the style determines how the bitmap is drawn in the view rectangle.<br>
+	If none of the following styles is specified, the bitmap is drawn in it's original size (clipped to the view).
+	<br>
+	<table border=0 cellspacing=0 cellpadding=2>
+	<tr><td width=50><font color=blue>scale</font></td><td>- the bitmap is scaled to the view size</td></tr>
+	<tr><td><font color=blue>hrepeat</font></td><td>- the bitmap is repeated horizontally to fit the view's width</td></tr>
+	<tr><td><font color=blue>vrepeat</font></td><td>- the bitmap vertically to fit the view's height</td></tr>
+	<tr><td><font color=blue>animate</font></td><td>- the bitmap will be animated if it is a filmstrip</td></tr>
+	</table>
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="label"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Label</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>label</b></font> title="..."
+<font color=green><b>just</b></font>="..."
+<font color=green><b>style</b></font>="..."
+/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>just</td>
+<td>
+	text justification, see <a href="#textdisplay">Text displays/edit</a>
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	<table border=0 cellspacing=0 cellpadding=2>
+	<tr><td width=50><font color=blue>autowidth</font></td><td>- the width of the label is set to fit the text, ignoring the width in <font color=green>size</font>.</td></tr>
+	</table>
+</td>
+</tr>
+</table>
+
+<br>
+Note that the title displayed in the label is translated.
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="decor"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Decor</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>decor</b></font>
+<font color=green><b>style</b></font>="..."
+<font color=green><b>bgcolor</b></font>="..."
+/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	<u>can be one of the following</u> (try how it looks):
+	<table>
+	<tr><td><font color=blue>workarea</font></td></tr>
+	<tr><td><font color=blue>dialogframe</font></td></tr>
+	<tr><td><font color=blue>groupframe</font></td></tr>
+	<tr><td><font color=blue>solidrect</font></td><td>- draws a rectangle filled with the given <font color=green>bgcolor</font></td></tr>
+	</table>
+	<br>
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>bgcolor</td>
+<td>
+	background color, only used with "<font color=blue>solidrect</font>" style
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="bmpscale"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Bitmap Scale</h3>
+
+<div class="xmltag">
+<big>
+&lt;<font color=blue><b>bitmapscale</b></font>
+name="..."
+<font color=green><b>maximum</b></font>="..."
+<font color=green><b>style</b></font>="..."
+<font color=red><b>bitmap</b></font>="..."
+<font color=green><b>segmentsize</b></font>="pixels"
+<font color=red><b>background</b></font>="..."
+<font color=green><b>offset</b></font>="x,y"
+/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>maximum</td>
+<td>
+	name of an application-specific value which should be displayed as maximum
+	(e.g. peak of a vu-meter)
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	can be <font color=blue>"horizontal"</font> or <font color=blue>"vertical"</font>,
+	combined with <font color=blue>"manipulate"</font>.<br>
+	If "manipulate" is set (e.g. "vertical|manipulate") the bitmap scale allows user interaction.
+
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>bitmap</td>
+<td>
+	foreground bitmap<br>
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>segmentsize</td>
+<td>
+	segment size in pixels
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>background</td>
+<td>
+	background bitmap
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>offset</td>
+<td>
+	offset to actual background in background bitmap
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="bmpdisp"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Bitmap Display</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>bitmapdisplay</b></font> name="..." <font color=red><b>bitmap</b></font>="..."/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+The bitmap display is a passive element that is used to display a value.
+The bitmap is horizontally divided into as many sections as the value
+has steps between its minimum and maximum. Lets assume the value
+can be either 0 or 1. In this case, the bitmap is divided into an upper
+and a lower half. If the value is 0, the upper half is displayed and if
+the value is 1 the lower half is displayed.<br>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="listbox"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Listbox</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>listbox</b></font> name="..." <font color=green><b>style</b></font>="..."/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	<font color=blue>hscroll</font> - horizontal scrollbar<br>
+	<font color=blue>vscroll</font> - vertical scrollbar<br>
+	<font color=blue>title</font> - show title<br>
+	<font color=blue>border</font><br>
+	<font color=blue>transparent</font><br>
+	<font color=blue>vlines</font> - vertical grid lines<br>
+	<font color=blue>hlines</font> - horizontal grid lines<br>
+	<font color=blue>select</font> - enable selection<br>
+	<font color=blue>exclusive</font> - exclusive selection<br>
+	<font color=blue>selectAlways</font> - prevent empty selection<br>
+	<font color=blue>close</font> - close the window on double click, enter, escape
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="progress"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Progressbar</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>progressbar</b></font> name="..." <font color=green><b>style</b></font>="..." <font color=green><b>title</b></font>="..."/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	<font color=blue>border</font> - control has a border<br>
+	<font color=blue>nodigits</font> - no percent text<br>
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>title (inherited)</td>
+<td>
+specifies the (initial) progress text
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="control"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Application-specific controls</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>control</b></font> name="..." <font color=red><b>class</b></font>="..." [attribute list]/&gt;</big><br>
+</div>
+
+<br>
+<br>
+
+The control tag is a placeholder for application-specific controls, identified by a class name.
+It can have any number of additional attributes.
+Of course it inherits all attributes of the &lt;view&gt; tag, too.<br>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>class</td>
+<td>
+	control class name
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<br>
+<div align=center>
+Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+All Rights Reserved.
+</div>
+<div align="center"><font size="1">Last Modified:
+<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+<br>
+<!---------------------------------------------------------------------------------------------->
+
+</body>
+
+</html>

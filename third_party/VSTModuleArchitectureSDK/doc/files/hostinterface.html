@@ -1,0 +1,121 @@
+<html>
+
+<head>
+	<title>Host Interface</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="sdkdoc.css">
+</head>
+
+<body>
+<div>
+
+<table border=0 width=600>
+<tr>
+	<td>
+		<h1>Host Interface</h1>
+
+		<!---------------------------------------------------------------------------------------------->
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="IHostApplication">
+		<h3>IHostApplication</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: <a href="funknown.html">FUnknown</a> &lt;- IHostApplication<br>
+			<b>Include File</b>:&nbsp; ihostapplication.h
+			</div>
+		</p>
+
+		<p>
+		<i>IHostApplication</i> is the minimum interface, implemented by ALL host applications.
+		You can query the <i>context</i> variable passed on in
+		<a href="pluginbase.html#IPluginBase_initialize">IPluginBase::initialize</a> for a
+		reference to this interface.
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#IHostApplication_getName">IHostApplication::getName</a>
+			<li><a href="#IHostApplication_getVersion">IHostApplication::getVersion</a>
+			<li><a href="#IHostApplication_getBuild">IHostApplication::getBuild</a>
+			<li><a href="#IHostApplication_getApplicationPath">IHostApplication::getApplicationPath</a>
+			<li><a href="#IHostApplication_getMainWindow">IHostApplication::getMainWindow</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IHostApplication_getName">
+		<h4>IHostApplication::getName</h4>
+		<div class=cpp>const char* PLUGIN_API <b>getName</b> ()</div>
+
+		<p>
+		Returns a pointer to the host application name string (e.g. "Cubase SX").
+		The pointer is valid as long as the interface reference is valid.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IHostApplication_getVersion">
+		<h4>IHostApplication::getVersion</h4>
+		<div class=cpp>const char* PLUGIN_API <b>getVersion</b> ()</div>
+
+		<p>
+		Returns a pointer to the host application version string (e.g. "2.0").
+		The pointer is valid as long as the interface reference is valid.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IHostApplication_getBuild">
+		<h4>IHostApplication::getBuild</h4>
+		<div class=cpp>const char* PLUGIN_API <b>getBuild</b> ()</div>
+
+		<p>
+		Returns a pointer to the host application build string (e.g. "100").
+		The pointer is valid as long as the interface reference is valid.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IHostApplication_getApplicationPath">
+		<h4>IHostApplication::getApplicationPath</h4>
+		<div class=cpp>tresult PLUGIN_API <b>getApplicationPath</b> (void** path)</div>
+
+		<p>
+		Copies the host application path to the <i>path</i> parameter. The datatype is platform-dependent:<br>
+		In Windows and Mac OS X you have to provide a character buffer of at least MAX_PATH size.<br>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="IHostApplication_getMainWindow">
+		<h4>IHostApplication::getMainWindow</h4>
+		<div class=cpp>tresult PLUGIN_API <b>getMainWindow</b> (void** window)</div>
+
+		<p>
+		Sets the window parameter to the host application's main window handle.
+		The datatype is platform-dependent: in Windows it is an HWND, on the MAC platform it is a WindowRef.
+		The Plug-In can use this handle e.g. as parent for modal dialogs.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<br>
+		<hr noshade size=4>
+		<div align=center>
+		Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+		All Rights Reserved.
+		</div>
+		<div align="center"><font size="1">Last Modified:
+		<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+		<br>
+		<!---------------------------------------------------------------------------------------------->
+	</td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

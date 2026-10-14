@@ -1,0 +1,193 @@
+<html>
+
+<head>
+	<title>Basic Interface</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="sdkdoc.css">
+</head>
+
+<body>
+<div>
+
+<table border=0 width=600>
+<tr>
+	<td>
+		<h1>Basic Interface</h1>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="FUnknown">
+		<h3>FUnknown</h3>
+		<p>
+			<div class=include>
+			<b>Inheritance</b>: none<br>
+			<b>Include File</b>:&nbsp; funknown.h
+			</div>
+		</p>
+
+		<p>
+		The <i>FUnknown::queryInterface</i> method is used to retrieve pointers to other interfaces of the object.
+		<i>FUnknown::addRef</i> and <i>FUnknown::release</i> manage the lifetime of the object. If no more references exist, the object is destroyed in memory.
+		</p>
+
+		<p>
+		Interfaces are identified by 16 byte Globally Unique Identifiers. The SDK provides a class called <a href="datatypes.html#FUID">FUID</a> for this purpose.
+		</p>
+
+		<p>
+		<b><u>Methods</u>:</b><br>
+		<ul>
+			<li><a href="#FUnknown_queryInterface">FUnknown::queryInterface</a>
+			<li><a href="#FUnknown_addRef">FUnknown::addRef</a>
+			<li><a href="#FUnknown_release">FUnknown::release</a>
+		</ul>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="FUnknown_queryInterface">
+		<h4>FUnknown::queryInterface</h4>
+		<div class=cpp>tresult PLUGIN_API <b>queryInterface</b> (const char* iid, void** obj)</div>
+
+		<p>
+		Query for a pointer to the specified interface. Returns <a href="datatypes.html#tresult">kResultOk</a>
+		on success or <a href="datatypes.html#tresult">kNoInterface</a> if the object does not implement the interface.
+		The object has to call <i>addRef</i> when returning an interface.
+		</p>
+
+		<p>
+			<b><u>Parameters</u></b>:<br>
+			<br>
+			<table border=1 cellspacing=0 cellpadding=4 bordercolor=lightgrey>
+			<tr>
+				<td>iid</td>
+				<td>
+					16 Byte interface identifier
+					(-&gt; <a href="datatypes.html#FUID">FUID</a>)
+				</td>
+			</tr>
+			<tr>
+				<td>obj</td>
+				<td>
+					On return, <i>obj</i> should point to the requested interface
+				</td>
+			</tr>
+			</table>
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="FUnknown_addRef">
+		<h4>FUnknown::addRef</h4>
+		<div class=cpp>unsigned long PLUGIN_API <b>addRef</b> ()</div>
+
+		<p>
+		Add a reference and return the new reference count.
+		</p>
+
+		<p>
+		<b><u>Remarks</u>:</b><br>
+		<br>
+		The initial reference count after creating an object is 1.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=2>
+		<a name="FUnknown_release">
+		<h4>FUnknown::release</h4>
+		<div class=cpp>unsigned long PLUGIN_API <b>release</b> ()</div>
+
+		<p>
+		Release a reference and return the new reference count. If the reference count reaches zero,
+		the object has to be destroyed in memory.
+		</p>
+
+		<!---------------------------------------------------------------------------------------------->
+		<hr noshade size=4>
+		<a name="HOWTO">
+		<h2>HOWTO derive a class from an interface</h2>
+
+		<p>
+		In the first example we derive a class directly from FUnknown, using some of the helper macros provided by the SDK.
+		</p>
+
+<div class=cpp>
+<pre>
+class CMyClass: public FUnknown
+{
+public:
+	CMyClass ();
+	virtual ~CMyClass ();
+
+	DECLARE_FUNKNOWN_METHODS  // declares queryInterface, addRef and release
+};
+
+
+CMyClass::CMyClass ()
+{
+	FUNKNOWN_CTOR // init reference counter, increment global object counter
+}
+
+CMyClass::~CMyClass ()
+{
+	FUNKNOWN_DTOR // decrement global object counter
+}
+
+IMPLEMENT_REFCOUNT (CMyClass) // implements reference counting
+
+tresult CMyClass::queryInterface (const char* iid, void** obj)
+{
+	QUERY_INTERFACE (iid, obj, ::FUnknown::iid, CMyClass)
+	return kNoInterface;
+}
+</pre>
+</div>
+		<p>
+		Developing a class with more than one interface is done by multiple inheritance.
+		Additionally you have to provide an appropriate cast for each interface in the queryInterface method.
+		</p>
+
+<div class=cpp>
+<pre>
+class CMyMultiClass:	public IPluginBase,
+			public IPlugController,
+			public IEditorFactory
+{
+public:
+	DECLARE_FUNKNOWN_METHODS
+
+	// declare the methods of all inherited interfaces here...
+};
+
+
+tresult CMyMultiClass::queryInterface (const char* iid, void** obj)
+{
+	QUERY_INTERFACE (iid, obj, ::FUnknown::iid, IPluginBase)
+	QUERY_INTERFACE (iid, obj, IPluginBase::iid, IPluginBase)
+	QUERY_INTERFACE (iid, obj, IPlugController::iid, IPlugController)
+	QUERY_INTERFACE (iid, obj, IEditorFactory::iid, IEditorFactory)
+	*obj = 0;
+	return kNoInterface;
+}
+</pre>
+</div>
+
+		<!---------------------------------------------------------------------------------------------->
+		<br>
+		<hr noshade size=4>
+		<div align=center>
+		Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+		All Rights Reserved.
+		</div>
+		<div align="center"><font size="1">Last Modified:    
+		<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+		<br>
+		<!---------------------------------------------------------------------------------------------->
+	</td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

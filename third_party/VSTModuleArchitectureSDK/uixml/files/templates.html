@@ -1,0 +1,352 @@
+<html>
+
+<head>
+	<title>Templates</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="uixml.css">
+</head>
+
+<body bgcolor=white text=black>
+
+<h2>Templates</h2>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="about"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>What are templates</h3>
+
+Templates describe a set of views (controls). A window can own several templates, containing more or less controls.
+They are used by the application to create more complex views, too. For example you just have to describe one mixer channel
+and the application creates the whole mixer strip.<br>
+<br>
+<b>Note that the names of templates and views have to be known by the application!</b><br>
+
+<br>
+<br>
+
+<div class="xmltag">
+<big>
+&lt;<font color=blue><b>template</b></font>
+<font color=red><b>name</b></font>="..."
+<font color=green><b>title</b></font>="..."
+<font color=green><b>background</b></font>="..."
+<font color=green><b>buttons</b></font>="..."
+<font color=green><b>help</b></font>="..."
+<font color=green><b>style</b></font>="..."
+<font color=green><b>shape</b></font>="..."&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color=darkgray>&lt;!-- place views here --&gt;</font><br>
+&lt;/template&gt;
+</big><br>
+</div>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>name</td>
+<td>
+	application-specific template name<br>
+</td>
+</tr>
+<tr>
+<td valign=top>title</td>
+<td>
+	window caption
+</td>
+</tr>
+<tr>
+<td valign=top>background</td>
+<td>
+	You can specify a background bitmap</a> for the template here.<br>
+	The window size will match the bitmap size.
+</td>
+</tr>
+<tr>
+<td valign=top>buttons</td>
+<td>
+	standard buttons for dialogs<br>
+	can be a combination of <font color=blue>"ok"</font>, <font color=blue>"cancel"</font> (e.g. "ok|cancel")
+</td>
+</tr>
+<tr>
+<td valign=top>help</td>
+<td>
+	context string for help system<br>
+	If the template is used in a dialog, a help button will be created.
+</td>
+</tr>
+<tr>
+<td valign=top>style</td>
+<td>
+	<u>Window styles</u>:
+	<table border=0 cellspacing=0 cellpadding=2>
+	<tr><td><font color=blue>windowstyle</font></td><td>- normal window with minimize, maximize,...</td></tr>
+	<tr><td><font color=blue>dialogstyle</font></td><td>- dialog window (not sizable,...)</td></tr>
+	<tr><td><font color=blue>panelstyle</font></td><td>- panel window (small titlebar)</td></tr>
+	<tr><td><font color=blue>noframe</font></td><td>- no OS specific window frame</td></tr>
+	</table>
+</td>
+</tr>
+<tr>
+<td valign=top>shape</td>
+<td>
+	assign a <a href="shapes.html">window shape</a> to the template
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<img src="gfx/more.gif"> <a href="shapes.html">Window Shapes</a><br>
+<img src="gfx/more.gif"> <a href="resources.html#bitmaps" target=content>Howto include bitmaps</a>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="variant"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Variant/Condition</h3>
+
+<div class="xmltag">
+<big>
+&lt;<font color=blue><b>variant</b></font> <font color=red><b>condition</b></font>="..."&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color=darkgray>&lt;!-- place controls here --&gt;</font><br>
+&lt;/variant&gt;
+</big><br>
+</div>
+
+<br>
+<br>
+
+The controls inside a &lt;variant&gt; tag only appear <b>under the specified condition</b>.
+A condition is expressed by certain strings (defined by the application), which can be combined with the logical operators
+<font color=blue>AND</font>, <font color=blue>OR</font> and <font color=blue>NOT</font>.
+The expression is parsed from left to right.<br>
+
+<br>
+e.g. part of a mixer channel template:<br>
+<br>
+
+<table border=1 cellspacing=0 cellpadding=4>
+<tr>
+<td valign=top>
+	&lt;variant <font color=red>condition</font>="surround"&gt;<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&lt;variant <font color=red>condition</font>="stereo"&gt;<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&lt;/variant&gt;<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&lt;variant <font color=red>condition</font>="<font color=blue>NOT</font> stereo"&gt;<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&lt;/variant&gt;<br>
+	&lt;/variant&gt;<br>
+	<br>
+	&lt;variant <font color=red>condition</font>="<font color=blue>NOT</font> surround"&gt;<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;...<br>
+	&lt;/variant&gt;<br>
+</td>
+<td valign=top>
+	&lt;variant <font color=red>condition</font>="surround <font color=blue>AND</font> stereo"&gt;<br>
+	&lt;/variant&gt;<br>
+	<br>
+	&lt;variant <font color=red>condition</font>="surround <font color=blue>AND NOT</font> stereo"&gt;<br>
+	&lt;/variant&gt;<br>
+	<br>
+	&lt;variant <font color=red>condition</font>="<font color=blue>NOT</font> surround <font color=blue>AND</font> stereo"&gt;<br>
+	&lt;/variant&gt;<br>
+	<br>
+	&lt;variant <font color=red>condition</font>="<font color=blue>NOT</font> surround <font color=blue>AND NOT</font> stereo"&gt;<br>
+	&lt;/variant&gt;<br>
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="frames"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>View auto-alignment</h3>
+
+<div class="xmltag">
+<big>
+&lt;<font color=blue><b>row [col]</b></font> <font color=green><b>width</b></font>="integer" <font color=green><b>height</b></font>="integer" <font color=green><b>margin</b></font>="integer"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color=darkgray>&lt;!-- place views here --&gt;</font><br>
+&lt;/row [/col]&gt;
+</big><br>
+</div>
+
+<br>
+<br>
+
+A &lt;row&gt; aligns its views horizontally, a &lt;col&gt; vertically. The size depends on the content,
+you can specify a minimum width/height optionally. The distance between the views corresponds to the default margin specified in the
+<a href="scheme.html" target=content>scheme section</a>.
+Rows and columns are not visible at runtime.<br>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>width</td>
+<td>
+	minimum width in pixels
+</td>
+</tr>
+<tr>
+<td valign=top>height</td>
+<td>
+	minimum height in pixels
+</td>
+</tr>
+<tr>
+<td valign=top>margin</td>
+<td>
+	outer margin in pixels<br>
+	If not specified, the default margin of the scheme is used.
+	Be carefull, the margin attribute doesn't influence the distance between views!
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="fonts"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Changing view fonts</h3>
+
+<div class="xmltag">
+<big>
+&lt;<font color=blue><b>font</b></font>
+<font color=green><b>name</b></font>="..."
+<font color=red><b>face</b></font>="..."
+<font color=green><b>size</b></font>="integer"
+<font color=green><b>style</b></font>="..."
+<font color=green><b>mode</b></font>="..."
+<font color=green><b>color</b></font>="#color"&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<font color=darkgray>&lt;!-- place views here --&gt;</font><br>
+&lt;/font&gt;
+</big><br>
+</div>
+
+<br>
+<br>
+
+The &lt;font&gt; tag changes the font for all views described inside.<br>
+<br>
+<b>Note that currently only</b> <a href="controls.html#label" target="content">labels</a> <b>and</b> <a href="controls.html#textdisplay" target="content">text displays</a> <b>support font changes!</b><br>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>name</td>
+<td>
+	Can be the name of a <a href="scheme.html#fonts" target="content">scheme font</a>.<br>
+	Either the <font color=green>name</font> or the <font color=green>face</font> attribute have to be specified.
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>face</td>
+<td>
+	font face<br>
+	You can specify several alternatives separated by colons (e.g. "Verdana, Arial, Helvetica")<br>
+	<br>
+	<u>Standard fonts</u> (platform-independent):<br>
+	<font color="blue">"System"</font><br>
+	<font color="blue">"Geneva"</font><br>
+	<font color="blue">"Helvetica"</font><br>
+	<font color="blue">"Courier"</font><br>
+	<font color="blue">"Times"</font><br>
+	<font color="blue">"Symbol"</font>
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>size</td>
+<td>
+	font heigt in pixels
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	Can be a combination of <font color="blue">"bold"</font>, <font color="blue">"italic"</font>, <font color="blue">"underline"</font>
+	(e.g. "bold|underline").<br>
+	<br>
+
+	<table border=0 cellspacing=0 cellpadding=0>
+	<tr>
+		<td>Windows specific:&nbsp;</td>
+		<td>
+			<font color="blue">"strikeout"</font>
+		</td>
+	</tr>
+	<tr>
+		<td>MAC specific:</td>
+		<td>
+			<font color="blue">"condense"</font>,
+			<font color="blue">"extend"</font>,
+			<font color="blue">"shadow"</font>,
+			<font color="blue">"outline"</font>
+		</td>
+	</tr>
+	</table>
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>mode</td>
+<td>
+	text drawing mode, can be set to <font color=blue>"opaque"</font>
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>color</td>
+<td>
+	text color<br>
+	<img src="gfx/more.gif"> <a href="misc.html#colors" target=content>HOWTO describe colors</a>
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<br>
+<div align=center>
+Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+All Rights Reserved.
+</div>
+<div align="center"><font size="1">Last Modified:    
+<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+<br>
+<!---------------------------------------------------------------------------------------------->
+
+</body>
+
+</html>

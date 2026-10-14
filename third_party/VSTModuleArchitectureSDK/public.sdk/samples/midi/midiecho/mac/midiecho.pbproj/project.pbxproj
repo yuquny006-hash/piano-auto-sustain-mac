@@ -1,0 +1,455 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 38;
+	objects = {
+		089C1669FE841209C02AAC07 = {
+			buildStyles = (
+				4F9091AC011F3BD104CA0E50,
+				4F9091AD011F3BD104CA0E50,
+			);
+			isa = PBXProject;
+			mainGroup = 089C166AFE841209C02AAC07;
+			projectDirPath = "";
+			targets = (
+				089C1673FE841209C02AAC07,
+			);
+		};
+		089C166AFE841209C02AAC07 = {
+			children = (
+				08FB77ADFE841716C02AAC07,
+				F5DF5A65055FA30101816446,
+				089C167CFE841241C02AAC07,
+				089C1671FE841209C02AAC07,
+				19C28FB4FE9D528D11CA2CBB,
+			);
+			isa = PBXGroup;
+			name = midiecho;
+			refType = 4;
+		};
+		089C1671FE841209C02AAC07 = {
+			children = (
+				08EA7FFBFE8413EDC02AAC07,
+			);
+			isa = PBXGroup;
+			name = "External Frameworks and Libraries";
+			refType = 4;
+		};
+		089C1673FE841209C02AAC07 = {
+			buildPhases = (
+				089C1674FE841209C02AAC07,
+				089C1675FE841209C02AAC07,
+				089C1676FE841209C02AAC07,
+				089C1677FE841209C02AAC07,
+				089C1679FE841209C02AAC07,
+			);
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = ../../../../../pluginterfaces;
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PREFIX_HEADER = prefixmacho.h;
+				PRODUCT_NAME = midiecho;
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+				WRAPPER_EXTENSION = bundle;
+			};
+			dependencies = (
+			);
+			isa = PBXBundleTarget;
+			name = midiecho;
+			productInstallPath = "$(HOME)/Library/Bundles";
+			productName = midiecho;
+			productReference = 4F9091AB011F3BD104CA0E50;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
+<plist version=\"1.0\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>midiecho</string>
+	<key>CFBundleGetInfoString</key>
+	<string>© 2003 Steinberg Media Technologies GmbH</string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>de.steinberg.midiecho.sample</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>MIDI Echo Sample</string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0.0</string>
+	<key>CSResourcesFileMapped</key>
+	<true/>
+</dict>
+</plist>
+";
+			shouldUseHeadermap = 1;
+		};
+		089C1674FE841209C02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXHeadersBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		089C1675FE841209C02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+				F5DF5A6A055FA32101816446,
+				F5DF5A6B055FA32101816446,
+			);
+			isa = PBXResourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		089C1676FE841209C02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+				F5DF5A50055FA2D001816446,
+				F5DF5A58055FA2DE01816446,
+				F5DF5A59055FA2DE01816446,
+				F5DF5A5A055FA2DE01816446,
+				F5DF5A5B055FA2DE01816446,
+				F5DF5A5C055FA2DE01816446,
+				F5DF5A5F055FA2EB01816446,
+				F5DF5A60055FA2EB01816446,
+				F5DF5A63055FA2F301816446,
+				F5DF5A64055FA2F301816446,
+				F5DF5A67055FA30F01816446,
+				F5DF5A6D055FA39501816446,
+			);
+			isa = PBXSourcesBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		089C1677FE841209C02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+				08EA7FFCFE8413EDC02AAC07,
+			);
+			isa = PBXFrameworksBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		089C1679FE841209C02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+			);
+			isa = PBXRezBuildPhase;
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		089C167CFE841241C02AAC07 = {
+			children = (
+				F5DF5A68055FA32101816446,
+				F5DF5A69055FA32101816446,
+			);
+			isa = PBXGroup;
+			name = Resources;
+			refType = 4;
+		};
+		08EA7FFBFE8413EDC02AAC07 = {
+			isa = PBXFrameworkReference;
+			name = Carbon.framework;
+			path = /System/Library/Frameworks/Carbon.framework;
+			refType = 0;
+		};
+		08EA7FFCFE8413EDC02AAC07 = {
+			fileRef = 08EA7FFBFE8413EDC02AAC07;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		08FB77ADFE841716C02AAC07 = {
+			children = (
+				F5DF5A4F055FA2D001816446,
+				F5DF5A6C055FA39501816446,
+				F5DF5A4E055FA2B801816446,
+				F5DF5A4D055FA2B101816446,
+				F5DF5A4C055FA2A001816446,
+			);
+			isa = PBXGroup;
+			name = Source;
+			path = "";
+			refType = 4;
+		};
+//080
+//081
+//082
+//083
+//084
+//190
+//191
+//192
+//193
+//194
+		19C28FB4FE9D528D11CA2CBB = {
+			children = (
+				4F9091AB011F3BD104CA0E50,
+			);
+			isa = PBXGroup;
+			name = Products;
+			refType = 4;
+		};
+//190
+//191
+//192
+//193
+//194
+//4F0
+//4F1
+//4F2
+//4F3
+//4F4
+		4F9091AB011F3BD104CA0E50 = {
+			isa = PBXBundleReference;
+			path = midiecho.bundle;
+			refType = 3;
+		};
+		4F9091AC011F3BD104CA0E50 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				OPTIMIZATION_CFLAGS = "-O0";
+			};
+			isa = PBXBuildStyle;
+			name = Development;
+		};
+		4F9091AD011F3BD104CA0E50 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			isa = PBXBuildStyle;
+			name = Deployment;
+		};
+//4F0
+//4F1
+//4F2
+//4F3
+//4F4
+//F50
+//F51
+//F52
+//F53
+//F54
+		F5DF5A4C055FA2A001816446 = {
+			children = (
+				F5DF5A52055FA2DE01816446,
+				F5DF5A53055FA2DE01816446,
+				F5DF5A54055FA2DE01816446,
+				F5DF5A55055FA2DE01816446,
+				F5DF5A56055FA2DE01816446,
+			);
+			isa = PBXGroup;
+			name = common;
+			path = "";
+			refType = 4;
+		};
+		F5DF5A4D055FA2B101816446 = {
+			children = (
+				F5DF5A5D055FA2EB01816446,
+				F5DF5A5E055FA2EB01816446,
+			);
+			isa = PBXGroup;
+			name = midi;
+			refType = 4;
+		};
+		F5DF5A4E055FA2B801816446 = {
+			children = (
+				F5DF5A61055FA2F301816446,
+				F5DF5A62055FA2F301816446,
+			);
+			isa = PBXGroup;
+			name = midiecho;
+			refType = 4;
+		};
+		F5DF5A4F055FA2D001816446 = {
+			isa = PBXFileReference;
+			name = macmain.cpp;
+			path = ../../../../source/main/macmain.cpp;
+			refType = 2;
+		};
+		F5DF5A50055FA2D001816446 = {
+			fileRef = F5DF5A4F055FA2D001816446;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DF5A52055FA2DE01816446 = {
+			isa = PBXFileReference;
+			name = linkedlist.cpp;
+			path = ../../../../source/common/linkedlist.cpp;
+			refType = 2;
+		};
+		F5DF5A53055FA2DE01816446 = {
+			isa = PBXFileReference;
+			name = pluginfactory.cpp;
+			path = ../../../../source/common/pluginfactory.cpp;
+			refType = 2;
+		};
+		F5DF5A54055FA2DE01816446 = {
+			isa = PBXFileReference;
+			name = pluginview.cpp;
+			path = ../../../../source/common/pluginview.cpp;
+			refType = 2;
+		};
+		F5DF5A55055FA2DE01816446 = {
+			isa = PBXFileReference;
+			name = plugparams.cpp;
+			path = ../../../../source/common/plugparams.cpp;
+			refType = 2;
+		};
+		F5DF5A56055FA2DE01816446 = {
+			isa = PBXFileReference;
+			name = plugxmlgui.cpp;
+			path = ../../../../source/common/plugxmlgui.cpp;
+			refType = 2;
+		};
+		F5DF5A58055FA2DE01816446 = {
+			fileRef = F5DF5A52055FA2DE01816446;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DF5A59055FA2DE01816446 = {
+			fileRef = F5DF5A53055FA2DE01816446;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DF5A5A055FA2DE01816446 = {
+			fileRef = F5DF5A54055FA2DE01816446;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DF5A5B055FA2DE01816446 = {
+			fileRef = F5DF5A55055FA2DE01816446;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DF5A5C055FA2DE01816446 = {
+			fileRef = F5DF5A56055FA2DE01816446;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DF5A5D055FA2EB01816446 = {
+			isa = PBXFileReference;
+			name = eventqueue.cpp;
+			path = ../../../../source/midi/eventqueue.cpp;
+			refType = 2;
+		};
+		F5DF5A5E055FA2EB01816446 = {
+			isa = PBXFileReference;
+			name = midieffect.cpp;
+			path = ../../../../source/midi/midieffect.cpp;
+			refType = 2;
+		};
+		F5DF5A5F055FA2EB01816446 = {
+			fileRef = F5DF5A5D055FA2EB01816446;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DF5A60055FA2EB01816446 = {
+			fileRef = F5DF5A5E055FA2EB01816446;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DF5A61055FA2F301816446 = {
+			isa = PBXFileReference;
+			name = midiecho.cpp;
+			path = ../source/midiecho.cpp;
+			refType = 2;
+		};
+		F5DF5A62055FA2F301816446 = {
+			isa = PBXFileReference;
+			name = midiechoentry.cpp;
+			path = ../source/midiechoentry.cpp;
+			refType = 2;
+		};
+		F5DF5A63055FA2F301816446 = {
+			fileRef = F5DF5A61055FA2F301816446;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DF5A64055FA2F301816446 = {
+			fileRef = F5DF5A62055FA2F301816446;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DF5A65055FA30101816446 = {
+			children = (
+				F5DF5A66055FA30F01816446,
+			);
+			isa = PBXGroup;
+			name = pluginterfaces;
+			path = "";
+			refType = 4;
+		};
+		F5DF5A66055FA30F01816446 = {
+			isa = PBXFileReference;
+			name = funknown.cpp;
+			path = ../../../../../pluginterfaces/base/funknown.cpp;
+			refType = 2;
+		};
+		F5DF5A67055FA30F01816446 = {
+			fileRef = F5DF5A66055FA30F01816446;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DF5A68055FA32101816446 = {
+			isa = PBXFileReference;
+			name = 1001.bmp;
+			path = ../resource/1001.bmp;
+			refType = 2;
+		};
+		F5DF5A69055FA32101816446 = {
+			isa = PBXFileReference;
+			name = midiecho.xml;
+			path = ../resource/midiecho.xml;
+			refType = 2;
+		};
+		F5DF5A6A055FA32101816446 = {
+			fileRef = F5DF5A68055FA32101816446;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DF5A6B055FA32101816446 = {
+			fileRef = F5DF5A69055FA32101816446;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		F5DF5A6C055FA39501816446 = {
+			isa = PBXFileReference;
+			path = midiecho.exp;
+			refType = 2;
+		};
+		F5DF5A6D055FA39501816446 = {
+			fileRef = F5DF5A6C055FA39501816446;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+	};
+	rootObject = 089C1669FE841209C02AAC07;
+}

@@ -1,0 +1,421 @@
+<html>
+
+<head>
+	<title>Custom View Settings</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="Author" content="Matthias Juwan">
+	<link rel="stylesheet" type="text/css" href="uixml.css">
+</head>
+
+<body bgcolor=white text=black>
+<a name="pagetop">
+
+<h2>Custom View Settings</h2>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="intro"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Introduction</h3>
+
+<i>Custom View Settings</i> are used to split up a user interface into several logical areas (<i>Custom View Items</i>), which can be shown/hidden
+individually by the user. This brings in quite a lot flexibility for Skin Designers, because the number of items and their arrangement
+is completely generic, thus dependent on the skin itself.<br>
+Custom settings are included in the <a href="main.html#structure">&lt;resources&gt;</a> section.<br>
+
+<br>
+
+<b>Grouping</b><br>
+<br>
+<i>Extended</i> custom settings allow items to be arranged in groups, whereas each group either aligns its items vertically or horizontally.
+Custom groups can be placed hierarchically into one another.<br>
+
+<br>
+
+<b>Layouts</b><br>
+<br>
+An application can collect several custom settings and present them to the user as selectable <i>Layouts</i> of the current skin.
+This is usually described with a certain prefix in the name of each custom setting (e.g. "<i>myViews</i>.default", "<i>myViews</i>.allFloat",...)<br>
+<br>
+<br>
+
+<table border=0 width=800>
+<tr>
+	<td>
+		<img src="gfx/customsettings1.gif" width=305 height=222 alt="Custom Settings Example">
+	</td>
+	<td width=500>
+	<div class="xmltag">
+		<br>
+		&lt;<a href="#customsettings">customsettings</a> name="Example.default" style="extended|default"&gt;<br>
+		<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;<a href="#customitem">customitem</a> name="template1" title="Item 1" style="fixed" group="<font color=green><b>left</b></font>"/&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;customitem name="template2" title="Item 2" style="sizable" group="<font color=green><b>left</b></font>"/&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;customitem name="template3" title="Item 3" style="sizable" group="<font color=blue><b>right</b></font>"/&gt;<br>
+		<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;<a href="#customgroup">customgroup</a> name="<font color=red><b>all</b></font>" attach="all"/&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;customgroup name="<font color=green><b>left</b></font>" parent="<font color=red><b>all</b></font>" style="vertical" attach="top|bottom"/&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;customgroup name="<font color=blue><b>right</b></font>" parent="<font color=red><b>all</b></font>" style="vertical" attach="all"/&gt;<br>
+		<br>
+		&lt;/customsettings&gt;<br>
+		<br>
+	</div>
+	</td>
+</tr>
+</table>
+
+<br>
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="tags"></a>
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Custom Settings Tags</h3>
+
+<a name="customsettings">
+<div class="xmltag">
+<big>&lt;<font color=blue><b>customsettings</b></font>
+			<font color=red><b>name</b></font>="..."
+			<font color=green><b>title</b></font>="..."
+			<font color=green><b>style</b></font>="..."
+			<font color=green><b>category</b></font>="..."
+&gt;</big>
+</div><br>
+
+<br>
+<br>
+
+Describes a set of custom items. If the application supports layouts, a <i>&lt;customsettings&gt;</i> object represents a single layout.<br>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>name</td>
+<td>
+	name, depends on application
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>title</td>
+<td>
+	title of this layout, shown in context menu
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	see remarks
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>category</td>
+<td>
+	key command category
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<u>Remarks</u>:<br>
+<br>
+
+<table border=1 width=400 cellspacing=0 cellpadding=4 bordercolor=#989898>
+<tr>
+<td width=100 valign=top><font color=blue>reorder</font></td>
+<td>
+	item order can be changed by user e.g. move second item before first item.
+</td>
+</tr>
+<tr>
+<td width=100 valign=top><font color=blue>sizewindow</font></td>
+<td>
+	Resize the containing window when items are shown/hidden.<br>
+	<br>
+	This style must not be specified for extended custom settings,
+	because resizing is done automatically by the item groups!
+</td>
+</tr>
+<tr>
+<td width=100 valign=top><font color=blue><b>extended</b></font></td>
+<td>
+	extended style, enables <a href="#customgroup">item grouping</a>
+</td>
+</tr>
+<tr>
+<td width=100 valign=top><font color=blue>commands</font></td>
+<td>
+	enable key commands
+</td>
+</tr>
+<tr>
+<td width=100 valign=top><font color=blue>default</font></td>
+<td>
+	default layout
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+<br>
+
+<a name="customitem">
+<div class="xmltag">
+<big>&lt;<font color=blue><b>customitem</b></font>
+			<font color=red><b>name</b></font>="..."
+			<font color=green><b>alternative</b></font>="..."
+			<font color=green><b>title</b></font>="..."
+			<font color=green><b>style</b></font>="..."
+			<font color=green><b>group</b></font>="..."
+			<font color=green><b>condition</b></font>="..."
+			<font color=green><b>command</b></font>="..."
+			<font color=green><b>shortcut</b></font>="..."
+&gt;</big>
+</div><br>
+
+<br>
+<br>
+
+A custom item usually can be shown/hidden by the user, either inside a group or as a floating window. The actual appearance of
+an item with all its views (controls) is to be described as a separate <a href="templates.html#about">template</a>. The template name must be equal to
+the item name.<br>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 width=600 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>name</td>
+<td>
+	template name
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>alternative</td>
+<td>
+	alternative template name, if the first template
+	is not present in current skin. This can be a
+	default template, provided by the application.
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>title</td>
+<td>
+	item title, shown in context menu
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	see remarks
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>group</td>
+<td>
+	name of group which contains this item
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>condition</td>
+<td>
+	Condition to show this item e.g. for item3 the condition
+	could be <i>"item1 OR item2"</i>. This means that item3 can only
+	be shown if item1 or item2 is visible, and will be hidden
+	automatically if both item1 and item2 are hidden.<br>
+	<br>
+	<img src="gfx/more.gif"> See also <a href="templates.html#variant">Variant/Condition</a>
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>command</td>
+<td>
+	key command name
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>shortcut</td>
+<td>
+	default key shortcut to show/hide this item (e.g. <font color=blue>"Ctrl+P"</font>)
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<u>Remarks</u>:<br>
+<br>
+
+<table border=1 width=400 cellspacing=0 cellpadding=4 bordercolor=#989898>
+<tr>
+<td width=100 valign=top><font color=blue>fixed</font></td>
+<td>
+	Item can not be hidden by user. There should be at least one
+	<i>fixed</i> item.
+</td>
+</tr>
+<tr>
+<td width=100 valign=top><font color=blue>hidden</font></td>
+<td>
+	item is initially invisible
+</td>
+</tr>
+<tr>
+<td width=100 valign=top><font color=blue>variant</font></td>
+<td>
+	This item is shown exclusively i.e. all other items and
+	groups are removed from screen and replaced by a single
+	template.
+</td>
+</tr>
+<tr>
+<td width=100 valign=top><font color=blue>sizable</font></td>
+<td>
+	item is resizable
+</td>
+</tr>
+<tr>
+<td width=100 valign=top><font color=blue>floating</font></td>
+<td>
+	item is in a separate floating window (not in a group)
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+<br>
+
+<a name="customgroup">
+<div class="xmltag">
+<big>&lt;<font color=blue><b>customgroup</b></font>
+			<font color=red><b>name</b></font>="..."
+			<font color=green><b>parent</b></font>="..."
+			<font color=green><b>style</b></font>="..."
+			<font color=green><b>attach</b></font>="..."
+&gt;</big>
+</div><br>
+
+<br>
+<br>
+
+Custom groups align its items either horizontally or vertically. When describing <i>extended</i> custom settings there should
+be at least one custom group. Groups can be placed hierarchically into one another.<br>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>name</td>
+<td>
+	group name
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>parent</td>
+<td>
+	name of parent group
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>style</td>
+<td>
+	group style, see remarks
+</td>
+</tr>
+<tr>
+<td width=100 valign=top>attach</td>
+<td>
+	group attachement<br>
+	<img src="gfx/more.gif"> <a href="views.html#about">View Attachement</a>
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<u>Remarks</u>:<br>
+<br>
+
+<table border=1 width=400 cellspacing=0 cellpadding=4 bordercolor=#989898>
+<tr>
+<td width=100 valign=top><font color=blue>vertical</font></td>
+<td>
+	align items vertically (default is horizontal)
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<a name="customview">
+<!---------------------------------------------------------------------------------------------->
+
+<h3>Custom View</h3>
+
+<div class="xmltag">
+<big>&lt;<font color=blue><b>customview</b></font> <font color=red><b>name</b></font>="..." size="..."&gt;</big></div><br>
+
+<br>
+<br>
+
+A <i>&lt;customview&gt;</i> can be used anywhere inside a template. It inherits all attributes from the
+<a href="views.html#about">&lt;view&gt;</a> tag.<br> As all other views, custom views can be placed hierarchically into
+one another. This would enable the user to show/hide items inside an item of the parent custom view...<br>
+
+<br>
+<br>
+
+<u>Attributes</u>:<br>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=4>
+<tr>
+<td width=100 valign=top>name</td>
+<td>
+	name of the <a href="#customsettings">&lt;customsettings&gt;</a> object, defining this view
+</td>
+</tr>
+</table>
+
+<br>
+<br>
+
+<!---------------------------------------------------------------------------------------------->
+<hr noshade size=4>
+<br>
+<div align=center>
+Copyright ©2004 <a href="http://www.steinberg.net" target="_blank"><u>Steinberg Media Technologies GmbH</u></a>.
+All Rights Reserved.
+</div>
+<div align="center"><font size="1">Last Modified:    
+<script language="Javascript" %="">document.writeln(document.lastModified);</script></font></div>
+<br>
+<!---------------------------------------------------------------------------------------------->
+
+</body>
+
+</html>
