@@ -5,7 +5,7 @@ package="$(cd "$(dirname "$0")" && pwd)"
 base="$HOME/Library/Audio/Plug-Ins"
 names=('Piano Auto Sustain.vst3' 'Piano Auto Sustain MIDI FX.component')
 formats=(VST3 Components)
-stages=(); moved=(0 0); installed=(0 0); committed=0
+stages=('' ''); moved=(0 0); installed=(0 0); committed=0
 finish() {
   local status=$?
   trap - EXIT INT TERM

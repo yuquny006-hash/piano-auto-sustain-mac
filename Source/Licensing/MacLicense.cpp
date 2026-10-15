@@ -46,7 +46,7 @@ void MacLicense::setStatus(juce::String s){std::lock_guard<std::mutex> lock(mute
 juce::String MacLicense::status() const {std::lock_guard<std::mutex> lock(mutex);return message;}
 void MacLicense::activate(juce::String code) {
     std::lock_guard<std::mutex> lock(mutex);
-    pending=code.trim().toUpperCase();message="正在激活 / Activating…";notify();
+    pending=code.trim().toUpperCase();message=juce::String::fromUTF8("正在激活 / Activating…");notify();
 }
 void MacLicense::run() {
     const auto machine=machineHash(); const auto file=licenseFile();
@@ -73,7 +73,7 @@ void MacLicense::run() {
             auto* stream=network.get();
             const bool connected=stream->connect(nullptr);
             if(threadShouldExit()) break;
-            if(!connected){setStatus("连接失败，请检查网络 / Connection failed");continue;}
+            if(!connected){setStatus("连接失败 D1，请收集日志 / Connection failed D1");continue;}
             const int http=stream->getStatusCode();
             juce::MemoryOutputStream bytes;
             const auto read=bytes.writeFromInputStream(*stream,16385);
@@ -85,7 +85,7 @@ void MacLicense::run() {
                 else if(reason=="SIGNING_UNAVAILABLE") setStatus("Mac 授权服务未就绪 / Service not ready");
                 else if(reason=="NOT_FOUND") setStatus("授权码不存在 / Code not found");
                 else if(reason=="DISABLED" || reason=="EXPIRED") setStatus("授权码已停用或过期 / Code inactive");
-                else setStatus("激活未成功，请稍后重试 / Activation failed");
+                else setStatus(juce::String::fromUTF8("激活失败 / Activation failed HTTP ")+juce::String(http));
                 continue;
             }
             auto record=response["license"];

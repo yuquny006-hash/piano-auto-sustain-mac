@@ -12,6 +12,14 @@ xcodebuild -version
 # A new workspace per invocation preserves previous successful outputs.
 work="$(mktemp -d "$root/mac-build-XXXXXX")"
 echo "Build workspace: $work"
+# Isolated SDK instrumentation: never change the builder's installed/shared JUCE.
+if [[ -n "${JUCE_SOURCE_DIR:-}" ]]; then
+  ditto "$JUCE_SOURCE_DIR" "$work/JUCE"
+else
+  git clone --depth 1 --branch 8.0.12 https://github.com/juce-framework/JUCE.git "$work/JUCE"
+fi
+python3 "$root/scripts/patch_juce_mac_network_diagnostics.py" "$work/JUCE"
+
 archive="$root/third_party/libsodium-1.0.20.tar.gz"
 [[ "$(shasum -a 256 "$archive" | cut -d ' ' -f1)" == ebb65ef6ca439333c2bb41a0c1990587288da07f6c7fd07cb3a18cc18d30ce19 ]]
 sdk="$(xcrun --sdk macosx --show-sdk-path)"
@@ -29,14 +37,14 @@ done
 mkdir -p "$work/sodium/lib"
 cp -R "$work/arm64/install/include" "$work/sodium/include"
 lipo -create "$work/arm64/install/lib/libsodium.a" "$work/x86_64/install/lib/libsodium.a" -output "$work/sodium/lib/libsodium.a"
-lipo "$work/sodium/lib/libsodium.a" -verify_arch arm64 x86_64
+lipo -verify_arch arm64 x86_64 "$work/sodium/lib/libsodium.a"
 cmake -S "$root" -B "$work/plugin" -G Xcode -DCMAKE_OSX_ARCHITECTURES='arm64;x86_64' \
-  -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 -DPAS_MAC_PUBLIC_KEY_HEX="$public_key" -DPAS_SODIUM_ROOT="$work/sodium"
+  -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 -DJUCE_SOURCE_DIR="$work/JUCE" -DPAS_MAC_PUBLIC_KEY_HEX="$public_key" -DPAS_SODIUM_ROOT="$work/sodium"
 cmake --build "$work/plugin" --config Release --target BassPedal_VST3 BassPedalAU_AU mac_license_tests vst3_processor_tests -j 4
 ctest --test-dir "$work/plugin" -C Release --output-on-failure -R '^(mac_license|vst3_processor|vst3_scan|product_version)$'
 for bundle in "$work/plugin/BassPedal_artefacts/Release/VST3/Piano Auto Sustain.vst3" "$work/plugin/BassPedalAU_artefacts/Release/AU/Piano Auto Sustain MIDI FX.component"; do
   binary="$(/usr/libexec/PlistBuddy -c 'Print CFBundleExecutable' "$bundle/Contents/Info.plist")"
-  lipo "$bundle/Contents/MacOS/$binary" -verify_arch arm64 x86_64
+  lipo -verify_arch arm64 x86_64 "$bundle/Contents/MacOS/$binary"
   codesign --force --sign - --timestamp=none "$bundle"
   codesign --verify --deep --strict "$bundle"
   otool -L "$bundle/Contents/MacOS/$binary" > "$work/$(basename "$bundle").dependencies.txt"

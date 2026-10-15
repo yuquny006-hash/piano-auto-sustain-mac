@@ -17,7 +17,7 @@ def main():
     build=pathlib.Path(a.build).resolve();out=pathlib.Path(a.output).resolve();out.mkdir(parents=True,exist_ok=True)
     cache=(build/'CMakeCache.txt').read_text()
     if 'PAS_MAC_PUBLIC_KEY_HEX:STRING='+a.public_key not in cache: raise RuntimeError('Build public key mismatch')
-    name='Piano-Auto-Sustain-1.0-macOS-Universal-Licensed-CANDIDATE'
+    name='Piano-Auto-Sustain-1.0-macOS-Universal-Licensed-NetworkDiagnostic-20261015'
     archive=out/(name+'.zip')
     if archive.exists(): raise RuntimeError('Refusing to overwrite an existing build')
     with tempfile.TemporaryDirectory(dir=out) as temp:
@@ -28,12 +28,13 @@ def main():
             check_binary(src/'Contents/MacOS'/info['CFBundleExecutable'],'macOS','Universal')
             subprocess.run(['codesign','--verify','--deep','--strict',str(src)],check=True)
             shutil.copytree(src,root/src.name,symlinks=True)
-        for source,dest in [('mac-licensed-install.sh','Install.command'),('mac-licensed-uninstall.sh','Uninstall.command')]:
+        for source,dest in [('mac-licensed-install.sh','Install.command'),('mac-licensed-uninstall.sh','Uninstall.command'),('Collect-Logic-Activation-Logs.command','Collect-Logic-Activation-Logs.command')]:
             target=root/dest;shutil.copy2(ROOT/'scripts'/source,target);target.chmod(0o755)
         shutil.copy2(ROOT/'docs/MAC-LICENSED-GUIDE.md',root/'Mac使用说明.md')
         shutil.copy2(ROOT/'docs/MAC-ACCEPTANCE.md',root/'Mac验收清单.md')
+        shutil.copy2(ROOT/'docs/MAC-NETWORK-DIAGNOSTIC-20261015.md',root/'Mac授权连接诊断说明.md')
         shutil.copytree(ROOT/'licenses',root/'licenses')
-        (root/'BUILD-INFO.json').write_text(json.dumps(dict(product='Piano Auto Sustain',version='1.0',platform='macOS-Universal',authorization='Ed25519 machine-bound',publicKey=a.public_key,mac_signing='ad-hoc; not notarized',daw_acceptance='pending'),indent=2))
+        (root/'BUILD-INFO.json').write_text(json.dumps(dict(product='Piano Auto Sustain',version='1.0',platform='macOS-Universal',authorization='Ed25519 machine-bound',publicKey=a.public_key,mac_signing='ad-hoc; not notarized',daw_acceptance='pending',network_diagnostics='PAS_AUTH_NETWORK_V1',activation_fix_verified=False),indent=2))
         write_manifest(root);verify_manifest(root)
         subprocess.run(['ditto','-c','-k','--sequesterRsrc','--keepParent',str(root),str(archive)],check=True)
     archive.with_suffix('.zip.sha256').write_text(digest(archive)+'  '+archive.name+'\n')

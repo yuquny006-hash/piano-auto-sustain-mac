@@ -17,9 +17,10 @@ public:
 private:
     void run() override;
     void setStatus(juce::String);
+    void setStatus(const char* utf8) { setStatus(juce::String::fromUTF8(utf8)); }
     std::atomic<bool>& authorized;
     mutable std::mutex mutex;
     std::unique_ptr<juce::WebInputStream> network;
-    juce::String pending, message{"正在检查授权 / Checking license"};
+    juce::String pending, message{juce::String::fromUTF8("正在检查授权 / Checking license")};
 };
 }
