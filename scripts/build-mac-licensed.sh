@@ -37,14 +37,14 @@ done
 mkdir -p "$work/sodium/lib"
 cp -R "$work/arm64/install/include" "$work/sodium/include"
 lipo -create "$work/arm64/install/lib/libsodium.a" "$work/x86_64/install/lib/libsodium.a" -output "$work/sodium/lib/libsodium.a"
-lipo -verify_arch arm64 x86_64 "$work/sodium/lib/libsodium.a"
+lipo "$work/sodium/lib/libsodium.a" -verify_arch arm64 x86_64
 cmake -S "$root" -B "$work/plugin" -G Xcode -DCMAKE_OSX_ARCHITECTURES='arm64;x86_64' \
   -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 -DJUCE_SOURCE_DIR="$work/JUCE" -DPAS_MAC_PUBLIC_KEY_HEX="$public_key" -DPAS_SODIUM_ROOT="$work/sodium"
 cmake --build "$work/plugin" --config Release --target BassPedal_VST3 BassPedalAU_AU mac_license_tests vst3_processor_tests -j 4
 ctest --test-dir "$work/plugin" -C Release --output-on-failure -R '^(mac_license|vst3_processor|vst3_scan|product_version)$'
 for bundle in "$work/plugin/BassPedal_artefacts/Release/VST3/Piano Auto Sustain.vst3" "$work/plugin/BassPedalAU_artefacts/Release/AU/Piano Auto Sustain MIDI FX.component"; do
   binary="$(/usr/libexec/PlistBuddy -c 'Print CFBundleExecutable' "$bundle/Contents/Info.plist")"
-  lipo -verify_arch arm64 x86_64 "$bundle/Contents/MacOS/$binary"
+  lipo "$bundle/Contents/MacOS/$binary" -verify_arch arm64 x86_64
   codesign --force --sign - --timestamp=none "$bundle"
   codesign --verify --deep --strict "$bundle"
   otool -L "$bundle/Contents/MacOS/$binary" > "$work/$(basename "$bundle").dependencies.txt"
